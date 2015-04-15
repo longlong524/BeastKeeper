@@ -1,4 +1,2 @@
 eclipse.preferences.version=1
-encoding//src/main/java/org/epiclouds/handlers/AbstractNettyCrawlerHandler.java=UTF-8
-encoding//src/main/java/org/epiclouds/handlers/CrawlerHandlerInterface.java=UTF-8
-encoding/<project>=UTF-8
+encoding//src/main/java/org/epiclouds/netty/CrawlerHandlerInterface.java=UTF-8

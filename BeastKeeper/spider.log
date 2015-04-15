@@ -1,0 +1,40 @@
+2015-04-13 17:09:13,543 WARN [nioEventLoopGroup-3-1] io.netty.util.concurrent.DefaultPromise [Slf4JLogger.java:151] An exception was thrown by org.epiclouds.handlers.AbstractNettyCrawlerHandler$1.operationComplete()
+java.lang.NullPointerException: null
+	at org.epiclouds.handlers.AbstractNettyCrawlerHandler.requestSelf(AbstractNettyCrawlerHandler.java:118) ~[classes/:na]
+	at org.epiclouds.handlers.AbstractNettyCrawlerHandler$1.operationComplete(AbstractNettyCrawlerHandler.java:89) ~[classes/:na]
+	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:631) [netty-all-5.0.0.Alpha1.jar:5.0.0.Alpha1]
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:596) [netty-all-5.0.0.Alpha1.jar:5.0.0.Alpha1]
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:553) [netty-all-5.0.0.Alpha1.jar:5.0.0.Alpha1]
+	at io.netty.util.concurrent.DefaultPromise.trySuccess(DefaultPromise.java:399) [netty-all-5.0.0.Alpha1.jar:5.0.0.Alpha1]
+	at io.netty.channel.DefaultChannelPromise.trySuccess(DefaultChannelPromise.java:82) [netty-all-5.0.0.Alpha1.jar:5.0.0.Alpha1]
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.fulfillConnectPromise(AbstractNioChannel.java:217) [netty-all-5.0.0.Alpha1.jar:5.0.0.Alpha1]
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:242) [netty-all-5.0.0.Alpha1.jar:5.0.0.Alpha1]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:502) [netty-all-5.0.0.Alpha1.jar:5.0.0.Alpha1]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:452) [netty-all-5.0.0.Alpha1.jar:5.0.0.Alpha1]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:346) [netty-all-5.0.0.Alpha1.jar:5.0.0.Alpha1]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:794) [netty-all-5.0.0.Alpha1.jar:5.0.0.Alpha1]
+	at java.lang.Thread.run(Thread.java:745) [na:1.8.0_40]
+2015-04-13 19:05:14,292 ERROR [pool-1-thread-1] org.epiclouds.client.main.CrawlerClient [AbstractNettyCrawlerHandler.java:233] /project/tag/106/httpserver?sort=view&lang=19&os=0
+java.lang.NullPointerException: null
+	at org.epiclouds.handlers.util.ProxyManger.setAddrErrorInfo(ProxyManger.java:53) ~[classes/:na]
+	at org.epiclouds.handlers.AbstractNettyCrawlerHandler.handleResponse2(AbstractNettyCrawlerHandler.java:231) [classes/:na]
+	at org.epiclouds.handlers.AbstractNettyCrawlerHandler.run(AbstractNettyCrawlerHandler.java:195) [classes/:na]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142) [na:1.8.0_40]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617) [na:1.8.0_40]
+	at java.lang.Thread.run(Thread.java:745) [na:1.8.0_40]
+2015-04-13 19:07:44,328 ERROR [pool-1-thread-1] org.epiclouds.client.main.CrawlerClient [AbstractNettyCrawlerHandler.java:211] /project/tag/106/httpserver?sort=view&lang=19&os=0
+io.netty.util.IllegalReferenceCountException: refCnt: 0, decrement: 1
+	at io.netty.buffer.AbstractReferenceCountedByteBuf.release(AbstractReferenceCountedByteBuf.java:115) ~[netty-all-5.0.0.Alpha1.jar:5.0.0.Alpha1]
+	at io.netty.handler.codec.http.DefaultFullHttpResponse.release(DefaultFullHttpResponse.java:80) ~[netty-all-5.0.0.Alpha1.jar:5.0.0.Alpha1]
+	at org.epiclouds.handlers.AbstractNettyCrawlerHandler.run(AbstractNettyCrawlerHandler.java:197) ~[classes/:na]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142) [na:1.8.0_40]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617) [na:1.8.0_40]
+	at java.lang.Thread.run(Thread.java:745) [na:1.8.0_40]
+2015-04-13 19:07:59,185 ERROR [pool-1-thread-1] org.epiclouds.client.main.CrawlerClient [AbstractNettyCrawlerHandler.java:211] /project/tag/106/httpserver?sort=view&lang=19&os=0
+io.netty.util.IllegalReferenceCountException: refCnt: 0, decrement: 1
+	at io.netty.buffer.AbstractReferenceCountedByteBuf.release(AbstractReferenceCountedByteBuf.java:115) ~[netty-all-5.0.0.Alpha1.jar:5.0.0.Alpha1]
+	at io.netty.handler.codec.http.DefaultFullHttpResponse.release(DefaultFullHttpResponse.java:80) ~[netty-all-5.0.0.Alpha1.jar:5.0.0.Alpha1]
+	at org.epiclouds.handlers.AbstractNettyCrawlerHandler.run(AbstractNettyCrawlerHandler.java:197) ~[classes/:na]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142) [na:1.8.0_40]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617) [na:1.8.0_40]
+	at java.lang.Thread.run(Thread.java:745) [na:1.8.0_40]

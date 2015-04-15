@@ -3,7 +3,7 @@
  * @created 2014 2014骞�12鏈�16鏃� 涓婂崍10:13:25
  * @version 1.0
  */
-package org.epiclouds.handlers;
+package org.epiclouds.netty;
 
 import java.util.Map;
 

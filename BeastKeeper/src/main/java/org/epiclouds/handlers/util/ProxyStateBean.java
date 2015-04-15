@@ -1,6 +1,8 @@
 package org.epiclouds.handlers.util;
 
+import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+import java.util.Arrays;
 
 /**
  * proxy status
@@ -11,30 +13,36 @@ public class ProxyStateBean {
 	/**
 	 * socket address
 	 */
-	private volatile SocketAddress addr;
+	private volatile String host;
+	/**
+	 * the port
+	 */
+	private volatile int port;
 	/**
 	 * authority info
 	 */
 	private volatile String authStr;
-	/**
-	 * is using by one thread
-	 */
-	private volatile boolean using=false;
+
 	/**
 	 * the error info
 	 */
 	private volatile String errorInfo=null;
+	/**
+	 * this proxy is removed?
+	 */
+	private volatile boolean removed=false;
 
-	public ProxyStateBean(SocketAddress addr,String authStr){
-		this.setAddr(addr);
+	public ProxyStateBean(String host,int port,String authStr){
+		this.host=host;
+		this.port=port;
 		this.setAuthStr(authStr);
 	}
-	public boolean isUsing() {
-		return using;
+	public boolean equals(Object o){
+		ProxyStateBean pb=(ProxyStateBean)o;
+		return pb.host.equals(host);
 	}
-
-	public void setUsing(boolean using) {
-		this.using = using;
+	public int hashCode(){
+		return host.hashCode();
 	}
 
 	public String getErrorInfo() {
@@ -44,17 +52,30 @@ public class ProxyStateBean {
 	public void setErrorInfo(String errorInfo) {
 		this.errorInfo = errorInfo;
 	}
-	public SocketAddress getAddr() {
-		return addr;
+
+	public String getHost() {
+		return host;
 	}
-	public void setAddr(SocketAddress addr) {
-		this.addr = addr;
+	public void setHost(String host) {
+		this.host = host;
+	}
+	public int getPort() {
+		return port;
+	}
+	public void setPort(int port) {
+		this.port = port;
 	}
 	public String getAuthStr() {
 		return authStr;
 	}
 	public void setAuthStr(String authStr) {
 		this.authStr = authStr;
+	}
+	public boolean isRemoved() {
+		return removed;
+	}
+	public void setRemoved(boolean removed) {
+		this.removed = removed;
 	}
 	
 	
