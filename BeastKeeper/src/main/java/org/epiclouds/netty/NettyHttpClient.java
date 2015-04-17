@@ -101,6 +101,7 @@ public class NettyHttpClient {
 					}
 					n.writeAndFlush(request.getRequest());
 				}else{
+					psb.setErrorInfo(future.cause().toString());
 					ProxyManager.addHostProxy(request.getHost(), psb);
 					manager.putRequestBack(request);
 				}

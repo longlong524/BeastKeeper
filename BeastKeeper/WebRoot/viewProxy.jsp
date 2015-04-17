@@ -1,6 +1,4 @@
-<%@page import="org.epiclouds.handlers.util.ProxyManger"%>
-<%@page import="org.epiclouds.spiders.ebay.bean.EbaySpiderBean"%>
-<%@page import="org.epiclouds.spiders.util.StatusManager"%>
+<%@page import="org.epiclouds.handlers.util.ProxyManager"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Map"%>
@@ -12,7 +10,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>爬虫状态查看</title>
+<title>代理查看</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
 <link href="css/bootstrap.css" rel="stylesheet" media="screen">
@@ -56,48 +54,37 @@
 			}
 		%>
 		
-		<%
-		Map<String, Map<SocketAddress, ProxyStateBean>> mp=ProxyManger.getProxyStatus();
-		for(String addr:mp.keySet()){
-			int use_count=0;
-			int good_count=0;
-		%>
 		
-			<fieldset>代理域名：<%=addr %></fieldset>
+			<fieldset>所有代理</fieldset>
 		<table class="table table-bordered">
 		<thead>
 			<tr class="success">
 				<td>代理地址</td>
+				<td>代理端口</td>
 				<td>认证信息</td>
-				<td>正在使用</td>
-				<td>是否正常</td>
+				<td>已移除</td>
+				<td>错误信息</td>
 			</tr>
 		</thead>
 		<tbody>
 		<%
-			for(ProxyStateBean eb:mp.get(addr).values()){
+			for(ProxyStateBean eb:ProxyManager.getProxyOrderByHost()){
 		%>
 			<tr>
 				<td>
-				<%=eb.getAddr()%>
+				<%=eb.getHost()%>
 				</td>
 				<td>
-						<%=eb.getAuthStr()==null?"无":eb.getAuthStr()%>
+						<%=eb.getPort()%>
 				</td>
 				<td>
-						<%=eb.isUsing() %>
-						<%if(eb.isUsing()) {
-							use_count++;
-							}
-						%>
+						<%=eb.getAuthStr() %>
 				</td>
 				<td>
-						<%=eb.getErrorInfo()==null?"正常":eb.getErrorInfo() %>
-						<%
-							if(eb.getErrorInfo()==null){
-								good_count++;
-							}
-						%>
+						<%=eb.isRemoved()%>
+				</td>
+				<td>
+						<%=eb.getErrorInfo()%>
 				</td>
 			</tr>
 			<%
@@ -105,12 +92,7 @@
 			%>
 		</tbody>
 	</table>
-		<h2>
-		总量：<%=mp.get(addr).size() %>,正在使用：<%=use_count %>,正常代理：<%=good_count %>
-		</h2>
-	<%
-		}
-	%>
+		
 
 	</div>
 	<%@include file="foot.html"%>

@@ -122,7 +122,6 @@ public class ChannelManager implements Runnable{
 				 * if i get the not initialized  proxy,
 				 */
 				if(psb!=null){
-					//System.err.println("use init proxy:"+psb);
 					client.connect(psb, re, this);
 					lq.poll();
 					continue;
@@ -149,10 +148,8 @@ public class ChannelManager implements Runnable{
 					ch.getCh().close();
 					continue;
 				}
-				//System.err.println("use channel:"+ch.getCh()+":"+ch.getCh().isOpen()+":"+dq.size());
 				NettyHttpClientHandler han=(NettyHttpClientHandler) ch.getCh().pipeline().get(Constants.CLIENT_HANDLER);
 				if(han==null){
-					//System.err.println("han channel");
 					continue;
 				}
 				han.setRequest(re);

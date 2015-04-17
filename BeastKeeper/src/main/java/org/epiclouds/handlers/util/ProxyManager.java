@@ -1,5 +1,9 @@
 package org.epiclouds.handlers.util;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -10,6 +14,20 @@ public class ProxyManager {
 	private static ConcurrentHashMap<String,LinkedBlockingQueue<ProxyStateBean>>	host_proxies=
 			new ConcurrentHashMap<String,LinkedBlockingQueue<ProxyStateBean>>(); 
 	
+	synchronized public static List<ProxyStateBean> getProxyOrderByHost() {
+		List<ProxyStateBean> re=new LinkedList<ProxyStateBean>();
+		re.addAll(all_proxies.values());
+		Collections.sort(re, new Comparator<ProxyStateBean>() {
+
+			@Override
+			public int compare(ProxyStateBean o1, ProxyStateBean o2) {
+				// TODO Auto-generated method stub
+				return o1.getHost().compareTo(o2.getHost());
+			}
+			
+		});
+		return re;
+	}
 	synchronized public static boolean addProxy(ProxyStateBean psb) {
 		if(psb==null) return false;
 		if(all_proxies.get(psb.getHost())!=null){
@@ -21,13 +39,14 @@ public class ProxyManager {
 		}
 		return true;
 	}
-	synchronized public static void removeProxy(String host) {
-		if(host==null) return;
+	synchronized public static boolean removeProxy(String host) {
+		if(host==null) return false;
 		if(all_proxies.get(host)==null){
-			return;
+			return false;
 		}
 		ProxyStateBean pb=all_proxies.remove(host);
 		pb.setRemoved(true);
+		return true;
 	}
 
 	public static void addHostProxy(String host,ProxyStateBean psb) throws InterruptedException{

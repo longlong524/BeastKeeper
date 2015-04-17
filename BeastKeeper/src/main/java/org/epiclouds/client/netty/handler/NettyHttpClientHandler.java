@@ -64,6 +64,9 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
 			throws Exception {
+		if(bp!=null){
+			bp.getPsb().setErrorInfo(cause.toString());
+		}
 		cause.printStackTrace();
 		super.exceptionCaught(ctx, cause);
 	}
@@ -117,6 +120,9 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 							NettyHttpClientHandler.this.bp,null));
 					NettyHttpClientHandler.this.bp.getCm().addBPChnnelToFreeQueue(bp);
 				}else{
+					if(bp!=null){
+						bp.getPsb().setErrorInfo(future.cause().toString());
+					}
 					NioSocketChannel nchannel=new NioSocketChannel();
 					n.eventLoop().register(nchannel);
 					ChannelFuture cf2=nchannel.connect(NettyHttpClientHandler.this.bp.getCh().remoteAddress());
@@ -129,8 +135,6 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 	@Override
 	public void disconnect(final ChannelHandlerContext ctx, ChannelPromise promise)
 			throws Exception {
-		System.err.println("channel disconnected");
-		// TODO Auto-generated method stub
 		super.disconnect(ctx, promise);
 	}
 	@Override
@@ -168,9 +172,11 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 		FullHttpResponse res=(FullHttpResponse)msg;
 		//System.err.println(res);
 		if(System.currentTimeMillis()-time>=Constants.request_time){
+			if(bp!=null){
+				bp.getPsb().setErrorInfo(request.getHost()+" timeout");
+			}
 			this.request=null;
 			this.bp.getCm().removeBPChnnelFromFreeQueue(bp);
-			System.err.println("timeout");
 			return;
 		}
 		if(request.getCh().isActive()){
