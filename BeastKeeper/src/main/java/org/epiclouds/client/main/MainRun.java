@@ -26,12 +26,16 @@ import org.epiclouds.handlers.util.MongoManager;
 import org.epiclouds.handlers.util.ProxyManager;
 import org.epiclouds.handlers.util.ProxyStateBean;
 import org.epiclouds.handlers.util.StorageBean;
+import org.epiclouds.handlers.util.TimeOutBean;
+import org.epiclouds.handlers.util.TimeoutManager;
 import org.epiclouds.netty.NettyHttpClient;
 import org.epiclouds.netty.NettyHttpServer;
 import org.epiclouds.spiders.webconsole.Login;
 import org.epiclouds.spiders.webconsole.Logout;
 import org.epiclouds.spiders.webconsole.AddProxy;
 import org.epiclouds.spiders.webconsole.RemoveProxy;
+import org.epiclouds.spiders.webconsole.UpdateDefaultTimeOut;
+import org.epiclouds.spiders.webconsole.UpdateTimeOut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,6 +55,9 @@ public class MainRun {
    public static void main(String[] args) throws Exception{
 	   //initProxyFromFile(Constants.PROXYFILE);
 	   initProxyFromMongo();
+	   initTimeoutFromMongo();
+	   initDefaultTimeoutFromMongo();
+	   startInnerJetty();
 	   NettyHttpClient client=new NettyHttpClient();
 	   ChannelManager manager=new ChannelManager(client);
 	   NettyHttpServer server=new NettyHttpServer(port, manager); 
@@ -72,11 +79,36 @@ public class MainRun {
 	
 	private static void initProxyFromMongo() throws NumberFormatException, IOException, InterruptedException {
 		StorageBean sb=new StorageBean();
+		sb.setDbstr(Constants.MONGO_DATABASE);
+		sb.setTablestr(Constants.TABLE_PROXY);
 		sb.setCondition(new BasicDBObject());
 		List<DBObject> re=MongoManager.find(sb);
 		for(DBObject db:re){
 			ProxyManager.addProxy(new ProxyStateBean((String)db.get("host"), 
 					(Integer)db.get("port"),(String)db.get("authStr")));
+		}
+	}
+	
+	
+	private static void initTimeoutFromMongo() throws NumberFormatException, IOException, InterruptedException {
+		StorageBean sb=new StorageBean();
+		sb.setDbstr(Constants.MONGO_DATABASE);
+		sb.setTablestr(Constants.TABLE_TIMEOUT);
+		sb.setCondition(new BasicDBObject());
+		List<DBObject> re=MongoManager.find(sb);
+		for(DBObject db:re){
+			TimeoutManager.addHostTimout(new TimeOutBean((String)db.get("host"), 
+					(Long)db.get("timeout")));
+		}
+	}
+	private static void initDefaultTimeoutFromMongo() throws NumberFormatException, IOException, InterruptedException {
+		StorageBean sb=new StorageBean();
+		sb.setDbstr(Constants.MONGO_DATABASE);
+		sb.setTablestr(Constants.TABLE_DEFALTTIMEOUT);
+		sb.setCondition(new BasicDBObject());
+		List<DBObject> re=MongoManager.find(sb);
+		for(DBObject db:re){
+			Constants.setTimeout((Long)db.get("timeout"));	
 		}
 	}
 	
@@ -99,6 +131,8 @@ public class MainRun {
 			webapp.addServlet(Login.class, "/login");
 			webapp.addServlet(AddProxy.class, "/addProxy");
 			webapp.addServlet(RemoveProxy.class, "/removeProxy");
+			webapp.addServlet(UpdateTimeOut.class, "/updateTimeOut");
+			webapp.addServlet(UpdateDefaultTimeOut.class, "/updateDefaultTimeOut");
 			webapp.addServlet(Logout.class, "/logout");
 			/*webapp.addServlet(new ServletHolder(new GetSourceType()),
 			"/getSourceType");*/

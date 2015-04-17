@@ -19,6 +19,7 @@ import io.netty.util.concurrent.GenericFutureListener;
 import org.epiclouds.handlers.util.BPChannel;
 import org.epiclouds.handlers.util.BPRequest;
 import org.epiclouds.handlers.util.Constants;
+import org.epiclouds.handlers.util.TimeoutManager;
 
 /**
  * @author Administrator
@@ -171,12 +172,13 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 		}
 		FullHttpResponse res=(FullHttpResponse)msg;
 		//System.err.println(res);
-		if(System.currentTimeMillis()-time>=Constants.request_time){
+		if(System.currentTimeMillis()-time>=Constants.REQUEST_TIMEOUT){
 			if(bp!=null){
 				bp.getPsb().setErrorInfo(request.getHost()+" timeout");
 			}
 			this.request=null;
-			this.bp.getCm().removeBPChnnelFromFreeQueue(bp);
+			this.bp.setVisit_time(System.currentTimeMillis());
+			this.bp.getCm().addBPChnnelToFreeQueue(bp);
 			return;
 		}
 		if(request.getCh().isActive()){
@@ -189,7 +191,7 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 			active=false;
 			return;
 		}
-		this.getBp().setVisit_time(System.currentTimeMillis());
+		this.bp.setVisit_time(System.currentTimeMillis());
 		this.bp.getCm().addBPChnnelToFreeQueue(bp);
 	}
 

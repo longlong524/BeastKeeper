@@ -1,11 +1,6 @@
 package org.epiclouds.spiders.webconsole;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,8 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.epiclouds.handlers.util.Constants;
 import org.epiclouds.handlers.util.MongoManager;
 import org.epiclouds.handlers.util.ProxyManager;
-import org.epiclouds.handlers.util.ProxyStateBean;
 import org.epiclouds.handlers.util.StorageBean;
+import org.epiclouds.handlers.util.TimeoutManager;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
@@ -26,13 +21,13 @@ import com.mongodb.DBObject;
  * Servlet implementation class GetChart
  */
 
-public class RemoveProxy extends HttpServlet {
+public class UpdateDefaultTimeOut extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Default constructor.
 	 */
-	public RemoveProxy() {
+	public UpdateDefaultTimeOut() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -42,34 +37,7 @@ public class RemoveProxy extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		try{
-			String host=request.getParameter("host");
-			if(host==null||"".equals(host)){
-				throw new Exception("host string is null!");
-			}
-			
-			boolean re=ProxyManager.removeProxy(host);
-			if(re){
-				StorageBean sb=new StorageBean();
-				sb.setDbstr(Constants.MONGO_DATABASE);
-				sb.setTablestr(Constants.TABLE_PROXY);
-				DBObject con=new BasicDBObject();
-				con.put("host", host);
-				sb.setCondition(con);
-				MongoManager.delete(sb);
-				request.setAttribute("success",  "删除代理成功！");
-				response.sendRedirect("success.jsp");
-			}else{
-				request.setAttribute("error", "删除代理失败！");
-				response.sendRedirect("error.jsp");
-			}
-		}catch(Exception e){
-			request.setAttribute("error", "删除代理失败！"+e.toString());
-			response.sendRedirect("error.jsp");
-			return;
-		}
-		
-		
+		doGet(request, response);
 	}
 
 	/**
@@ -78,7 +46,28 @@ public class RemoveProxy extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+
+		try{
+			long timeout=Long.parseLong(request.getParameter("timeout"));
+			Constants.setTimeout(timeout);
+			StorageBean sb=new StorageBean();
+			sb.setDbstr(Constants.MONGO_DATABASE);
+			sb.setTablestr(Constants.TABLE_DEFALTTIMEOUT);
+			DBObject con=new BasicDBObject();
+			con.put("host", "host");
+			DBObject data=new BasicDBObject();
+			data.put("host", "host");
+			data.put("timeout", timeout);
+			sb.setData(data);
+			sb.setCondition(con);
+			MongoManager.UpOrInsert(sb);
+			request.setAttribute("success",  "更新默认延时时间成功！");
+			response.sendRedirect("success.jsp");
+		}catch(Exception e){
+			request.setAttribute("error", "更新默认延时时间失败！"+e.toString());
+			response.sendRedirect("error.jsp");
+			return;
+		}
 	}
 
 

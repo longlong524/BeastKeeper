@@ -23,10 +23,7 @@ public class BPChannel implements Delayed{
 	 * what time visited
 	 */
 	private volatile long visit_time;
-	/**
-	 * the timeout,in milliseconds
-	 */
-	private volatile long timeout=Constants.getTimeout();
+
 	/**
 	 * the proxy bean
 	 */
@@ -66,12 +63,6 @@ public class BPChannel implements Delayed{
 	public void setVisit_time(long visit_time) {
 		this.visit_time = visit_time;
 	}
-	public long getTimeout() {
-		return timeout;
-	}
-	public void setTimeout(long timeout) {
-		this.timeout = timeout;
-	}
 	@Override
 	public int compareTo(Delayed o) {
 		// TODO Auto-generated method stub
@@ -83,6 +74,7 @@ public class BPChannel implements Delayed{
 	public long getDelay(TimeUnit unit) {
 		// TODO Auto-generated method stub
 		long t1=System.currentTimeMillis()-visit_time;
+		long timeout=TimeoutManager.getHostTimout(host);
 		if(t1>=timeout){
 			return 0;
 		}
