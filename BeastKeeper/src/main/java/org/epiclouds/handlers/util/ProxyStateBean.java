@@ -44,6 +44,9 @@ public class ProxyStateBean {
 	public int hashCode(){
 		return host.hashCode();
 	}
+	public String toString(){
+		return host+":"+port;
+	}
 
 	public String getErrorInfo() {
 		return errorInfo;

@@ -10,15 +10,16 @@ public class ProxyManager {
 	private static ConcurrentHashMap<String,LinkedBlockingQueue<ProxyStateBean>>	host_proxies=
 			new ConcurrentHashMap<String,LinkedBlockingQueue<ProxyStateBean>>(); 
 	
-	synchronized public static void addProxy(ProxyStateBean psb) {
-		if(psb==null) return;
+	synchronized public static boolean addProxy(ProxyStateBean psb) {
+		if(psb==null) return false;
 		if(all_proxies.get(psb.getHost())!=null){
-			return;
+			return false;
 		}
 		all_proxies.put(psb.getHost(), psb);
 		for(String str:host_proxies.keySet()){
 			host_proxies.get(str).add(psb);
 		}
+		return true;
 	}
 	synchronized public static void removeProxy(String host) {
 		if(host==null) return;

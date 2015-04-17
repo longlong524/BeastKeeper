@@ -6,7 +6,13 @@ import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 import io.netty.channel.DefaultChannelPromise;
+import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
+import io.netty.handler.codec.http.HttpContentDecompressor;
+import io.netty.handler.codec.http.HttpObjectAggregator;
+import io.netty.handler.codec.http.HttpRequestEncoder;
+import io.netty.handler.codec.http.HttpResponseDecoder;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
@@ -20,7 +26,7 @@ import org.epiclouds.handlers.util.Constants;
  */
 public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 	final private BPChannel bp;
-	private BPRequest request;
+	private volatile BPRequest request;
 	private volatile boolean active=true;
 	private volatile long time=System.currentTimeMillis();
 	public NettyHttpClientHandler(BPChannel bp,BPRequest request){
@@ -68,21 +74,16 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		// TODO Auto-generated method stub
-		System.err.println("channel active");
+		System.err.println("channel Active");
 		super.channelActive(ctx);
+		ctx.flush();
 	}
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 		// TODO Auto-generated method stub
-		System.err.println("channel inactive");
+		System.err.println("channel Inactive:"+this.bp.getCm().getSizeOfHostChannel(this.bp.getHost()));
 		super.channelInactive(ctx);
-	}
-	@Override
-	public void disconnect(final ChannelHandlerContext ctx, ChannelPromise promise)
-			throws Exception {
-		System.err.println("channel disconnected");
 		if(!active){
-			super.disconnect(ctx, promise);
 			return;
 		}
 		if(this.getBp().getPsb().isRemoved()&&active){
@@ -91,26 +92,44 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 			return;
 		}
 		this.bp.getCm().removeBPChnnelFromFreeQueue(bp);
-		ChannelFuture cf=ctx.channel().connect(ctx.channel().remoteAddress());
+		ctx.channel().close();
+		NioSocketChannel nchannel=new NioSocketChannel();
+		ctx.channel().eventLoop().register(nchannel);
+		ChannelFuture cf=nchannel.connect(ctx.channel().remoteAddress());
 		cf.addListener(new GenericFutureListener<Future<? super Void>>() {
 
 			@Override
 			public void operationComplete(Future<? super Void> future)
 					throws Exception {
+				Channel n=((DefaultChannelPromise) future).channel();
 				if(future.isSuccess()){
-					Channel n=((DefaultChannelPromise) future).channel();
 					NettyHttpClientHandler.this.bp.setCh(n);
-					if(request!=null){
-						n.write(request.getRequest());
-					}
+					 n.pipeline().addLast(new HttpResponseDecoder());
+
+				       
+				       n. pipeline().addLast("redeflater", new HttpContentDecompressor());
+				       n.pipeline().addLast("aggregator", new HttpObjectAggregator(1048576*1024));
+				        /**
+				         * http服务器端对request编码
+				         */
+				        n.pipeline().addLast( new HttpRequestEncoder());
+					n.pipeline().addLast(Constants.CLIENT_HANDLER, new NettyHttpClientHandler(
+							NettyHttpClientHandler.this.bp,null));
 					NettyHttpClientHandler.this.bp.getCm().addBPChnnelToFreeQueue(bp);
 				}else{
-					ChannelFuture cf2=NettyHttpClientHandler.this.bp.getCh().connect(NettyHttpClientHandler.this.bp.getCh().remoteAddress());
+					NioSocketChannel nchannel=new NioSocketChannel();
+					n.eventLoop().register(nchannel);
+					ChannelFuture cf2=nchannel.connect(NettyHttpClientHandler.this.bp.getCh().remoteAddress());
 					cf2.addListener(this);
 				}
 			}
 			
 		});
+	}
+	@Override
+	public void disconnect(final ChannelHandlerContext ctx, ChannelPromise promise)
+			throws Exception {
+		System.err.println("channel disconnected");
 		// TODO Auto-generated method stub
 		super.disconnect(ctx, promise);
 	}
@@ -119,8 +138,8 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 			throws Exception {
 		// TODO Auto-generated method stub
 		System.err.println("channel close");
+		super.close(ctx, promise);
 		if(!active){
-			super.close(ctx, promise);
 			return;
 		}
 		if(this.getBp().getPsb().isRemoved()&&active){
@@ -136,20 +155,27 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 			ChannelPromise promise) throws Exception {
 		// TODO Auto-generated method stub
 		this.time=System.currentTimeMillis();
+		//System.err.println(msg);
 		super.write(ctx, msg, promise);
 	}
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg)
 			throws Exception {
+		//System.err.println("channelRead");
 		if(!active){
 			return;
 		}
+		FullHttpResponse res=(FullHttpResponse)msg;
+		//System.err.println(res);
 		if(System.currentTimeMillis()-time>=Constants.request_time){
 			this.request=null;
+			this.bp.getCm().removeBPChnnelFromFreeQueue(bp);
+			System.err.println("timeout");
 			return;
 		}
-		FullHttpResponse res=(FullHttpResponse)msg;
-		request.getCh().write(res);
+		if(request.getCh().isActive()){
+			request.getCh().writeAndFlush(res);
+		}
 		request=null;
 		if(this.getBp().getPsb().isRemoved()&&active){
 			ctx.channel().close();

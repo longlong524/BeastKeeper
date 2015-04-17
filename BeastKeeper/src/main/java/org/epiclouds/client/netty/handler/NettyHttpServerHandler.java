@@ -4,13 +4,16 @@ import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
+import io.netty.handler.codec.http.HttpMethod;
 
 import java.net.SocketAddress;
 
 import org.epiclouds.handlers.util.BPRequest;
 import org.epiclouds.handlers.util.ChannelManager;
+import org.epiclouds.handlers.util.Constants;
 
 
 /**
@@ -56,6 +59,13 @@ public class NettyHttpServerHandler extends ChannelHandlerAdapter{
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg)
 			throws Exception {
+		FullHttpRequest res=(FullHttpRequest)msg;
+		if(res.method().compareTo(HttpMethod.CONNECT)==0){
+			System.err.println("connect:"+Constants.CONNECT_RESPONSE);
+			ctx.channel().writeAndFlush(Constants.CONNECT_RESPONSE);
+			ctx.close();
+			return;
+		}
 		manager.addBPRequest(new BPRequest(ctx.channel(),(FullHttpRequest)msg));
 	}
 

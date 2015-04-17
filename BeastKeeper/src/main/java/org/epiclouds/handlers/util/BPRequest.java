@@ -3,6 +3,7 @@ package org.epiclouds.handlers.util;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
+import io.netty.handler.codec.http.HttpMethod;
 /**
  * the my request in beastkeeper
  * @author xianglong
@@ -29,7 +30,7 @@ public class BPRequest {
 	public BPRequest(Channel ch,FullHttpRequest request){
 		this.ch=ch;
 		this.request=request;
-		setHost(request.headers().get("host"));
+		setHost(request.headers().get("host")+"");
 	}
 	public Channel getCh() {
 		return ch;

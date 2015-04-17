@@ -27,6 +27,7 @@ import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
 import org.epiclouds.client.netty.handler.NettyHttpClientHandler;
+import org.epiclouds.client.netty.handler.SimpleEncoder;
 import org.epiclouds.handlers.util.BPChannel;
 import org.epiclouds.handlers.util.BPRequest;
 import org.epiclouds.handlers.util.ChannelManager;
@@ -57,7 +58,8 @@ public class NettyHttpClient {
 				         * http-response解码器
 				         * http服务器端对response解码
 				         */
-				        pipeline.addLast(new HttpResponseDecoder());
+					 //pipeline.addLast(new SimpleEncoder());
+				       pipeline.addLast(new HttpResponseDecoder());
 
 				       
 				        pipeline.addLast("redeflater", new HttpContentDecompressor());
@@ -97,7 +99,7 @@ public class NettyHttpClient {
 						request.getRequest().headers().add("Proxy-Authorization", "Basic "
 							+new sun.misc.BASE64Encoder().encode(psb.getAuthStr().getBytes()));
 					}
-					n.write(request.getRequest());
+					n.writeAndFlush(request.getRequest());
 				}else{
 					ProxyManager.addHostProxy(request.getHost(), psb);
 					manager.putRequestBack(request);

@@ -76,7 +76,7 @@ public class NettyHttpServer {
 				}	
 	        });
 	        ChannelFuture f = sb.bind(port).sync(); // (7)
-	        System.out.println("server started");
+	        System.out.println("server started in port:"+port);
     }
     
    

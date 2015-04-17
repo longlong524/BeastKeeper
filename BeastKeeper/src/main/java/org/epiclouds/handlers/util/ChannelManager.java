@@ -50,6 +50,13 @@ public class ChannelManager implements Runnable{
 	public void addBPRequest(BPRequest request){
 		requestQue.add(request);
 	}
+	public int getSizeOfHostChannel(String host){
+		DelayQueue<BPChannel> dq=freeChannels.get(host);
+		if(dq==null){
+			return 0;
+		}
+		return dq.size();
+	}
 	public void start(){
 		Executors.newSingleThreadExecutor().execute(this);
 	}
@@ -80,6 +87,12 @@ public class ChannelManager implements Runnable{
 	@Override
 	public void run() {
 		while(true){
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			for(int i=0;i<max_poll_request_num;i++){
 				BPRequest br=requestQue.poll();
 				if(br==null){
@@ -109,6 +122,7 @@ public class ChannelManager implements Runnable{
 				 * if i get the not initialized  proxy,
 				 */
 				if(psb!=null){
+					//System.err.println("use init proxy:"+psb);
 					client.connect(psb, re, this);
 					lq.poll();
 					continue;
@@ -128,18 +142,26 @@ public class ChannelManager implements Runnable{
 					continue;
 				}
 				BPChannel ch=dq.poll();
+				if(ch==null||!ch.getCh().isOpen()){
+					continue;
+				}
 				if(ch.getPsb().isRemoved()){
 					ch.getCh().close();
 					continue;
 				}
-				lq.poll();
+				//System.err.println("use channel:"+ch.getCh()+":"+ch.getCh().isOpen()+":"+dq.size());
 				NettyHttpClientHandler han=(NettyHttpClientHandler) ch.getCh().pipeline().get(Constants.CLIENT_HANDLER);
-				han.setRequest(re);
-				if(psb.getAuthStr()!=null){
-					re.getRequest().headers().add("Proxy-Authorization", "Basic "
-						+new sun.misc.BASE64Encoder().encode(psb.getAuthStr().getBytes()));
+				if(han==null){
+					//System.err.println("han channel");
+					continue;
 				}
-				ch.getCh().write(re.getRequest());
+				han.setRequest(re);
+				lq.poll();
+				if(ch.getPsb().getAuthStr()!=null){
+					re.getRequest().headers().add("Proxy-Authorization", "Basic "
+						+new sun.misc.BASE64Encoder().encode(ch.getPsb().getAuthStr().getBytes()));
+				}
+				ch.getCh().writeAndFlush(re.getRequest());
 			}
 		}
 	}

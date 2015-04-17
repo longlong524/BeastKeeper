@@ -22,7 +22,7 @@
   <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-all</artifactId>
-      <version>5.0.0.Alpha1</version>
+      <version>5.0.0.Alpha3-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -31,31 +31,12 @@
       <version>1.1.2</version>
   </dependency>
 	<dependency>
-		<groupId>com.alibaba</groupId>
-		<artifactId>fastjson</artifactId>
-		<version>1.2.2</version>
-	</dependency>
-	<dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
         <version>1.0.13</version>
     </dependency> 
-    <dependency>
-        <groupId>org.mongodb</groupId>
-		<artifactId>mongo-java-driver</artifactId>
-        <version>2.13.0-rc0</version>
-    </dependency>
-    <dependency>
-        <groupId>net.sourceforge.htmlunit</groupId>
-		<artifactId>htmlunit</artifactId>
-        <version>2.15</version>
-    </dependency>
-   	<dependency>
-		<groupId>org.jsoup</groupId>
-		<artifactId>jsoup</artifactId>
-		<version>1.8.1</version>
-		<scope>compile</scope>
-	</dependency>
+
+
 
    		<!-- Joda Time Library -->
 	<dependency>
@@ -63,5 +44,16 @@
 		<artifactId>joda-time</artifactId>
 		<version>2.3</version>
 	</dependency>
+		  <dependency>
+			<groupId>org.eclipse.jetty.aggregate</groupId>
+			<artifactId>jetty-all</artifactId>
+			<version>8.1.16.v20140903</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>jasper</artifactId>
+			<version>6.0.39</version>
+		</dependency>
   </dependencies>
 </project>
