@@ -1,5 +1,3 @@
-<%@page import="org.epiclouds.spiders.ebay.bean.EbaySpiderBean"%>
-<%@page import="org.epiclouds.spiders.util.StatusManager"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Map"%>
@@ -57,7 +55,7 @@
 		</div>
 	<%@include file="foot.html"%>
 	<SCRIPT type="text/javascript">
-		setactive("view");
+		setactive("viewProxy");
 	</SCRIPT>
 </body>
 

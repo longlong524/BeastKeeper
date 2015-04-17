@@ -1,4 +1,4 @@
-<%@page import="org.epiclouds.handlers.util.ProxyManager"%>
+<%@page import="org.epiclouds.handlers.util.HostStatusManager"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Map"%>
@@ -10,7 +10,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>代理查看</title>
+<title>请求处理情况</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
 <link href="css/bootstrap.css" rel="stylesheet" media="screen">
@@ -55,41 +55,30 @@
 		%>
 		
 		
-			<fieldset>所有代理</fieldset>
+			<fieldset>所有host的请求处理情况</fieldset>
 		<table class="table table-bordered">
 		<thead>
 			<tr class="success">
-				<td>代理地址</td>
-				<td>代理端口</td>
-				<td>认证信息</td>
-				<td>已移除</td>
-				<td>错误信息</td>
-				<td>删除</td>
+				<td>host地址</td>
+				<td>已收到请求/个</td>
+				<td>已处理请求/个</td>
 			</tr>
 		</thead>
 		<tbody>
 		<%
-			for(ProxyStateBean eb:ProxyManager.getProxyOrderByHost()){
+			for(HostStatusBean eb:HostStatusManager.getAllHostStatusByOrder()){
 		%>
 			<tr>
 				<td>
 				<%=eb.getHost()%>
 				</td>
 				<td>
-						<%=eb.getPort()%>
+						<%=eb.getRequest_num().get()%>
 				</td>
 				<td>
-						<%=eb.getAuthStr() %>
+						<%=eb.getHandled_num().get() %>
 				</td>
-				<td>
-						<%=eb.isRemoved()%>
-				</td>
-				<td>
-						<%=eb.getErrorInfo()%>
-				</td>
-				<td>
-					<a  class="btn btn-large btn-danger" href="removeProxy?host=<%=eb.getHost()%>">删除</a>
-				</td>
+
 			</tr>
 			<%
 			}
@@ -101,7 +90,7 @@
 	</div>
 	<%@include file="foot.html"%>
 	<SCRIPT type="text/javascript">
-		setactive("viewProxy");
+		setactive("viewHostStatus");
 	</SCRIPT>
 </body>
 

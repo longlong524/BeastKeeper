@@ -60,7 +60,7 @@
 		<form class="form-horizontal" action="updateDefaultTimeOut" method="post">
 			<div class="input-append">
 					<input class="span2" id="appendedInputButton" type="text" name="timeout" placeholder="毫秒" >
-						<button class="btn" type="button">更新延时</button>
+						<button class="btn" type="submit">更新延时</button>
 			</div>
 		</form>
 				
@@ -68,7 +68,7 @@
 	</div>
 	<%@include file="foot.html"%>
 	<SCRIPT type="text/javascript">
-		setactive("viewProxy");
+		setactive("updateDefaultTimeOut");
 	</SCRIPT>
 </body>
 

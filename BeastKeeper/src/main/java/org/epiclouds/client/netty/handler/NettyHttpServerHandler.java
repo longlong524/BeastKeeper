@@ -14,6 +14,7 @@ import java.net.SocketAddress;
 import org.epiclouds.handlers.util.BPRequest;
 import org.epiclouds.handlers.util.ChannelManager;
 import org.epiclouds.handlers.util.Constants;
+import org.epiclouds.handlers.util.HostStatusManager;
 
 
 /**
@@ -61,12 +62,15 @@ public class NettyHttpServerHandler extends ChannelHandlerAdapter{
 			throws Exception {
 		FullHttpRequest res=(FullHttpRequest)msg;
 		if(res.method().compareTo(HttpMethod.CONNECT)==0){
-			System.err.println("connect:"+Constants.CONNECT_RESPONSE);
 			ctx.channel().writeAndFlush(Constants.CONNECT_RESPONSE);
 			ctx.close();
 			return;
 		}
-		manager.addBPRequest(new BPRequest(ctx.channel(),(FullHttpRequest)msg));
+		FullHttpRequest re=(FullHttpRequest)msg;
+		if(re.headers().get("Host")!=null){
+			HostStatusManager.incrementRequestNum(re.headers().get("Host")+"");
+		}
+		manager.addBPRequest(new BPRequest(ctx.channel(),re));
 	}
 
 	@Override

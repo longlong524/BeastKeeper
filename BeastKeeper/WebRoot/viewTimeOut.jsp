@@ -66,7 +66,9 @@
 		</thead>
 		<tbody>
 		<%
+			int i=0;
 			for(TimeOutBean eb:TimeoutManager.getAllHostTimoutByOrder()){
+				i++;
 		%>
 			<tr>
 				<td>
@@ -76,11 +78,11 @@
 						<%=eb.getTimeout()%>
 				</td>
 				<td>
-					<form class="form-horizontal" action="updateTimeOut" method="post">
+					<form class="form-horizontal" id=<%=i %> action="updateTimeOut" method="post">
 						<input class="span2" id="appendedInputButton" type="hidden" value="<%=eb.getHost()%>" name="host">
 						<div class="input-append">
  							<input class="span2" id="appendedInputButton" type="text" name="timeout" placeholder="毫秒" >
-  							<button class="btn" type="button">更新延时</button>
+  							<button class="btn" type="submit">更新延时</button>
 						</div>
 					</form>
 				</td>
@@ -95,7 +97,7 @@
 	</div>
 	<%@include file="foot.html"%>
 	<SCRIPT type="text/javascript">
-		setactive("viewProxy");
+		setactive("viewTimeOut");
 	</SCRIPT>
 </body>
 

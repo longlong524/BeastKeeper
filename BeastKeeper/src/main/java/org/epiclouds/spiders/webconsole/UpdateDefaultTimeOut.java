@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.epiclouds.handlers.util.Constants;
 import org.epiclouds.handlers.util.MongoManager;
@@ -46,7 +47,11 @@ public class UpdateDefaultTimeOut extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
+		HttpSession s=request.getSession();
+		if(s.getAttribute("user")==null){
+			response.sendRedirect("login.jsp");
+			return;
+		}
 		try{
 			long timeout=Long.parseLong(request.getParameter("timeout"));
 			Constants.setTimeout(timeout);
@@ -62,10 +67,10 @@ public class UpdateDefaultTimeOut extends HttpServlet {
 			sb.setCondition(con);
 			MongoManager.UpOrInsert(sb);
 			request.setAttribute("success",  "更新默认延时时间成功！");
-			response.sendRedirect("success.jsp");
+			request.getRequestDispatcher("success.jsp").forward(request, response);
 		}catch(Exception e){
 			request.setAttribute("error", "更新默认延时时间失败！"+e.toString());
-			response.sendRedirect("error.jsp");
+			request.getRequestDispatcher("error.jsp").forward(request, response);
 			return;
 		}
 	}

@@ -19,6 +19,7 @@ import io.netty.util.concurrent.GenericFutureListener;
 import org.epiclouds.handlers.util.BPChannel;
 import org.epiclouds.handlers.util.BPRequest;
 import org.epiclouds.handlers.util.Constants;
+import org.epiclouds.handlers.util.HostStatusManager;
 import org.epiclouds.handlers.util.TimeoutManager;
 
 /**
@@ -160,6 +161,10 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 			ChannelPromise promise) throws Exception {
 		// TODO Auto-generated method stub
 		this.time=System.currentTimeMillis();
+		FullHttpRequest re=(FullHttpRequest)msg;
+		if(re.headers().get("Host")!=null){
+			HostStatusManager.incrementHandledNum(re.headers().get("Host")+"");
+		}
 		//System.err.println(msg);
 		super.write(ctx, msg, promise);
 	}

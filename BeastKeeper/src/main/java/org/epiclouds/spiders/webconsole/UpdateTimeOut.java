@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.epiclouds.handlers.util.Constants;
 import org.epiclouds.handlers.util.MongoManager;
@@ -46,7 +47,11 @@ public class UpdateTimeOut extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
+		HttpSession s=request.getSession();
+		if(s.getAttribute("user")==null){
+			response.sendRedirect("login.jsp");
+			return;
+		}
 		try{
 			String host=request.getParameter("host");
 			if(host==null||"".equals(host)){
@@ -67,14 +72,14 @@ public class UpdateTimeOut extends HttpServlet {
 				sb.setCondition(con);
 				MongoManager.UpOrInsert(sb);
 				request.setAttribute("success",  "更新"+host+"延时时间成功！");
-				response.sendRedirect("success.jsp");
+				request.getRequestDispatcher("success.jsp").forward(request, response);
 			}else{
 				request.setAttribute("error", "更新延时时间失败！");
-				response.sendRedirect("error.jsp");
+				request.getRequestDispatcher("error.jsp").forward(request, response);
 			}
 		}catch(Exception e){
 			request.setAttribute("error", "更新延时时间失败！"+e.toString());
-			response.sendRedirect("error.jsp");
+			request.getRequestDispatcher("error.jsp").forward(request, response);
 			return;
 		}
 	}

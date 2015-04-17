@@ -1582,3 +1582,594 @@ java.io.IOException: 你的主机中的软件中止了一个已建立的连接�
 	at io.netty.util.internal.chmv8.ForkJoinPool.scan(ForkJoinPool.java:1706) [netty-all-5.0.0.Alpha3-SNAPSHOT.jar:5.0.0.Alpha3-SNAPSHOT]
 	at io.netty.util.internal.chmv8.ForkJoinPool.runWorker(ForkJoinPool.java:1661) [netty-all-5.0.0.Alpha3-SNAPSHOT.jar:5.0.0.Alpha3-SNAPSHOT]
 	at io.netty.util.internal.chmv8.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:126) [netty-all-5.0.0.Alpha3-SNAPSHOT.jar:5.0.0.Alpha3-SNAPSHOT]
+2015-04-17 18:07:48,916 INFO [main] org.epiclouds.client.main.MainRun [MainRun.java:121] Start web console in 8002
+2015-04-17 18:07:49,119 INFO [main] org.eclipse.jetty.server.Server [Server.java:272] jetty-8.1.16.v20140903
+2015-04-17 18:07:49,675 INFO [main] org.eclipse.jetty.server.AbstractConnector [AbstractConnector.java:338] Started SelectChannelConnector@0.0.0.0:8002
+2015-04-17 18:07:49,675 INFO [main] org.epiclouds.client.main.MainRun [MainRun.java:147] Start web console finished
+2015-04-17 18:08:05,428 WARN [qtp1883840933-22] org.eclipse.jetty.servlet.ServletHandler [ServletHandler.java:538] 
+org.apache.jasper.JasperException: Unable to compile class for JSP: 
+
+An error occurred at line: 6 in the generated java file
+Only a type can be imported. org.epiclouds.spiders.ebay.bean.EbaySpiderBean resolves to a package
+
+An error occurred at line: 7 in the generated java file
+Only a type can be imported. org.epiclouds.spiders.util.StatusManager resolves to a package
+
+An error occurred at line: 57 in the jsp file: /index.jsp
+StatusManager.ebayQue cannot be resolved to a type
+54: 		%>
+55: 		
+56: 		
+57: 			<fieldset>ebay店铺待爬数量：<%=StatusManager.ebayQue.size() %></fieldset>
+58: 		<table class="table table-bordered">
+59: 		<thead>
+60: 			<tr class="success">
+
+
+An error occurred at line: 68 in the jsp file: /index.jsp
+EbaySpiderBean cannot be resolved to a type
+65: 		</thead>
+66: 		<tbody>
+67: 		<%
+68: 			for(EbaySpiderBean eb:StatusManager.ebayQue){
+69: 		%>
+70: 			<tr>
+71: 				<td>
+
+
+An error occurred at line: 68 in the jsp file: /index.jsp
+StatusManager.ebayQue cannot be resolved to a type
+65: 		</thead>
+66: 		<tbody>
+67: 		<%
+68: 			for(EbaySpiderBean eb:StatusManager.ebayQue){
+69: 		%>
+70: 			<tr>
+71: 				<td>
+
+
+An error occurred at line: 87 in the jsp file: /index.jsp
+StatusManager.ebayFinished cannot be resolved to a type
+84: 		</tbody>
+85: 	</table>
+86: 		
+87: 	<fieldset>ebay店铺已完成数量：<%=StatusManager.ebayFinished.size() %></fieldset>
+88: 		<table class="table table-bordered">
+89: 		<thead>
+90: 			<tr class="success">
+
+
+An error occurred at line: 98 in the jsp file: /index.jsp
+EbaySpiderBean cannot be resolved to a type
+95: 		</thead>
+96: 		<tbody>
+97: 		<%
+98: 			for(EbaySpiderBean eb:StatusManager.ebayFinished){
+99: 		%>
+100: 			<tr>
+101: 				<td>
+
+
+An error occurred at line: 98 in the jsp file: /index.jsp
+StatusManager.ebayFinished cannot be resolved to a type
+95: 		</thead>
+96: 		<tbody>
+97: 		<%
+98: 			for(EbaySpiderBean eb:StatusManager.ebayFinished){
+99: 		%>
+100: 			<tr>
+101: 				<td>
+
+
+An error occurred at line: 118 in the jsp file: /index.jsp
+StatusManager.ebayStatus cannot be resolved to a type
+115: 	</table>
+116: 	
+117: 	
+118: 	<fieldset>ebay店铺未完成数量：<%=StatusManager.ebayStatus.size() %></fieldset>
+119: 		<table class="table table-bordered">
+120: 		<thead>
+121: 			<tr class="success">
+
+
+An error occurred at line: 130 in the jsp file: /index.jsp
+EbaySpiderBean cannot be resolved to a type
+127: 		</thead>
+128: 		<tbody>
+129: 		<%
+130: 			for(EbaySpiderBean eb:StatusManager.ebayStatus.values()){
+131: 		%>
+132: 			<tr>
+133: 				<td>
+
+
+An error occurred at line: 130 in the jsp file: /index.jsp
+StatusManager.ebayStatus cannot be resolved to a type
+127: 		</thead>
+128: 		<tbody>
+129: 		<%
+130: 			for(EbaySpiderBean eb:StatusManager.ebayStatus.values()){
+131: 		%>
+132: 			<tr>
+133: 				<td>
+
+
+Stacktrace:
+	at org.apache.jasper.compiler.DefaultErrorHandler.javacError(DefaultErrorHandler.java:92) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.compiler.ErrorDispatcher.javacError(ErrorDispatcher.java:330) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.compiler.JDTCompiler.generateClass(JDTCompiler.java:443) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:356) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:334) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:321) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.JspCompilationContext.compile(JspCompilationContext.java:592) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.servlet.JspServletWrapper.service(JspServletWrapper.java:328) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.servlet.JspServlet.serviceJspFile(JspServlet.java:313) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.servlet.JspServlet.service(JspServlet.java:260) ~[jasper-6.0.39.jar:6.0.39]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:848) ~[javax.servlet-3.0.0.v201112011016.jar:na]
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:684) ~[jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:503) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:137) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:557) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:231) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1086) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:429) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:193) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1020) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:135) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:116) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.Server.handle(Server.java:370) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.AbstractHttpConnection.handleRequest(AbstractHttpConnection.java:494) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.AbstractHttpConnection.headerComplete(AbstractHttpConnection.java:971) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.AbstractHttpConnection$RequestHandler.headerComplete(AbstractHttpConnection.java:1033) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.http.HttpParser.parseNext(HttpParser.java:644) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.http.HttpParser.parseAvailable(HttpParser.java:235) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.AsyncHttpConnection.handle(AsyncHttpConnection.java:82) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.io.nio.SelectChannelEndPoint.handle(SelectChannelEndPoint.java:696) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.io.nio.SelectChannelEndPoint$1.run(SelectChannelEndPoint.java:53) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:608) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$3.run(QueuedThreadPool.java:543) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at java.lang.Thread.run(Thread.java:745) [na:1.8.0_40]
+2015-04-17 18:08:05,430 WARN [qtp1883840933-22] org.eclipse.jetty.servlet.ServletHandler [ServletHandler.java:563] /index.jsp
+org.apache.jasper.JasperException: Unable to compile class for JSP: 
+
+An error occurred at line: 6 in the generated java file
+Only a type can be imported. org.epiclouds.spiders.ebay.bean.EbaySpiderBean resolves to a package
+
+An error occurred at line: 7 in the generated java file
+Only a type can be imported. org.epiclouds.spiders.util.StatusManager resolves to a package
+
+An error occurred at line: 57 in the jsp file: /index.jsp
+StatusManager.ebayQue cannot be resolved to a type
+54: 		%>
+55: 		
+56: 		
+57: 			<fieldset>ebay店铺待爬数量：<%=StatusManager.ebayQue.size() %></fieldset>
+58: 		<table class="table table-bordered">
+59: 		<thead>
+60: 			<tr class="success">
+
+
+An error occurred at line: 68 in the jsp file: /index.jsp
+EbaySpiderBean cannot be resolved to a type
+65: 		</thead>
+66: 		<tbody>
+67: 		<%
+68: 			for(EbaySpiderBean eb:StatusManager.ebayQue){
+69: 		%>
+70: 			<tr>
+71: 				<td>
+
+
+An error occurred at line: 68 in the jsp file: /index.jsp
+StatusManager.ebayQue cannot be resolved to a type
+65: 		</thead>
+66: 		<tbody>
+67: 		<%
+68: 			for(EbaySpiderBean eb:StatusManager.ebayQue){
+69: 		%>
+70: 			<tr>
+71: 				<td>
+
+
+An error occurred at line: 87 in the jsp file: /index.jsp
+StatusManager.ebayFinished cannot be resolved to a type
+84: 		</tbody>
+85: 	</table>
+86: 		
+87: 	<fieldset>ebay店铺已完成数量：<%=StatusManager.ebayFinished.size() %></fieldset>
+88: 		<table class="table table-bordered">
+89: 		<thead>
+90: 			<tr class="success">
+
+
+An error occurred at line: 98 in the jsp file: /index.jsp
+EbaySpiderBean cannot be resolved to a type
+95: 		</thead>
+96: 		<tbody>
+97: 		<%
+98: 			for(EbaySpiderBean eb:StatusManager.ebayFinished){
+99: 		%>
+100: 			<tr>
+101: 				<td>
+
+
+An error occurred at line: 98 in the jsp file: /index.jsp
+StatusManager.ebayFinished cannot be resolved to a type
+95: 		</thead>
+96: 		<tbody>
+97: 		<%
+98: 			for(EbaySpiderBean eb:StatusManager.ebayFinished){
+99: 		%>
+100: 			<tr>
+101: 				<td>
+
+
+An error occurred at line: 118 in the jsp file: /index.jsp
+StatusManager.ebayStatus cannot be resolved to a type
+115: 	</table>
+116: 	
+117: 	
+118: 	<fieldset>ebay店铺未完成数量：<%=StatusManager.ebayStatus.size() %></fieldset>
+119: 		<table class="table table-bordered">
+120: 		<thead>
+121: 			<tr class="success">
+
+
+An error occurred at line: 130 in the jsp file: /index.jsp
+EbaySpiderBean cannot be resolved to a type
+127: 		</thead>
+128: 		<tbody>
+129: 		<%
+130: 			for(EbaySpiderBean eb:StatusManager.ebayStatus.values()){
+131: 		%>
+132: 			<tr>
+133: 				<td>
+
+
+An error occurred at line: 130 in the jsp file: /index.jsp
+StatusManager.ebayStatus cannot be resolved to a type
+127: 		</thead>
+128: 		<tbody>
+129: 		<%
+130: 			for(EbaySpiderBean eb:StatusManager.ebayStatus.values()){
+131: 		%>
+132: 			<tr>
+133: 				<td>
+
+
+Stacktrace:
+	at org.apache.jasper.compiler.DefaultErrorHandler.javacError(DefaultErrorHandler.java:92) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.compiler.ErrorDispatcher.javacError(ErrorDispatcher.java:330) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.compiler.JDTCompiler.generateClass(JDTCompiler.java:443) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:356) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:334) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:321) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.JspCompilationContext.compile(JspCompilationContext.java:592) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.servlet.JspServletWrapper.service(JspServletWrapper.java:328) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.servlet.JspServlet.serviceJspFile(JspServlet.java:313) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.servlet.JspServlet.service(JspServlet.java:260) ~[jasper-6.0.39.jar:6.0.39]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:848) ~[javax.servlet-3.0.0.v201112011016.jar:na]
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:684) ~[jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:503) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:137) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:557) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:231) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1086) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:429) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:193) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1020) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:135) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:116) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.Server.handle(Server.java:370) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.AbstractHttpConnection.handleRequest(AbstractHttpConnection.java:494) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.AbstractHttpConnection.headerComplete(AbstractHttpConnection.java:971) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.AbstractHttpConnection$RequestHandler.headerComplete(AbstractHttpConnection.java:1033) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.http.HttpParser.parseNext(HttpParser.java:644) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.http.HttpParser.parseAvailable(HttpParser.java:235) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.AsyncHttpConnection.handle(AsyncHttpConnection.java:82) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.io.nio.SelectChannelEndPoint.handle(SelectChannelEndPoint.java:696) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.io.nio.SelectChannelEndPoint$1.run(SelectChannelEndPoint.java:53) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:608) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$3.run(QueuedThreadPool.java:543) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at java.lang.Thread.run(Thread.java:745) [na:1.8.0_40]
+2015-04-17 18:09:35,902 INFO [main] org.epiclouds.client.main.MainRun [MainRun.java:121] Start web console in 8002
+2015-04-17 18:09:36,014 INFO [main] org.eclipse.jetty.server.Server [Server.java:272] jetty-8.1.16.v20140903
+2015-04-17 18:09:36,228 INFO [main] org.eclipse.jetty.server.AbstractConnector [AbstractConnector.java:338] Started SelectChannelConnector@0.0.0.0:8002
+2015-04-17 18:09:36,228 INFO [main] org.epiclouds.client.main.MainRun [MainRun.java:147] Start web console finished
+2015-04-17 18:09:44,283 WARN [qtp1883840933-17] org.eclipse.jetty.http.HttpGenerator [HttpGenerator.java:180] Ignoring extra content 
+
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>代理查看</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Bootstrap -->
+<link href="css/bootstrap.css" rel="stylesheet" media="screen">
+</head>
+<body>
+
+	
+<div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container" style="width:100%">
+			<button type="button" class="btn btn
+2015-04-17 18:12:01,434 INFO [main] org.epiclouds.client.main.MainRun [MainRun.java:121] Start web console in 8002
+2015-04-17 18:12:01,568 INFO [main] org.eclipse.jetty.server.Server [Server.java:272] jetty-8.1.16.v20140903
+2015-04-17 18:12:01,778 INFO [main] org.eclipse.jetty.server.AbstractConnector [AbstractConnector.java:338] Started SelectChannelConnector@0.0.0.0:8002
+2015-04-17 18:12:01,779 INFO [main] org.epiclouds.client.main.MainRun [MainRun.java:147] Start web console finished
+2015-04-17 18:12:16,186 WARN [qtp1883840933-18] org.eclipse.jetty.http.HttpGenerator [HttpGenerator.java:180] Ignoring extra content 
+
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>代理查看</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Bootstrap -->
+<link href="css/bootstrap.css" rel="stylesheet" media="screen">
+</head>
+<body>
+
+	
+<div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container" style="width:100%">
+			<button type="button" class="btn btn
+2015-04-17 18:13:52,868 WARN [qtp1883840933-18] org.eclipse.jetty.servlet.ServletHandler [ServletHandler.java:538] 
+org.apache.jasper.JasperException: Unable to compile class for JSP: 
+
+An error occurred at line: 6 in the generated java file
+Only a type can be imported. org.epiclouds.spiders.ebay.bean.EbaySpiderBean resolves to a package
+
+An error occurred at line: 7 in the generated java file
+Only a type can be imported. org.epiclouds.spiders.util.StatusManager resolves to a package
+
+Stacktrace:
+	at org.apache.jasper.compiler.DefaultErrorHandler.javacError(DefaultErrorHandler.java:92) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.compiler.ErrorDispatcher.javacError(ErrorDispatcher.java:330) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.compiler.JDTCompiler.generateClass(JDTCompiler.java:443) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:356) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:334) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:321) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.JspCompilationContext.compile(JspCompilationContext.java:592) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.servlet.JspServletWrapper.service(JspServletWrapper.java:328) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.servlet.JspServlet.serviceJspFile(JspServlet.java:313) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.servlet.JspServlet.service(JspServlet.java:260) ~[jasper-6.0.39.jar:6.0.39]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:848) ~[javax.servlet-3.0.0.v201112011016.jar:na]
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:684) ~[jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:503) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:137) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:557) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:231) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1086) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:429) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:193) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1020) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:135) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:116) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.Server.handle(Server.java:370) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.AbstractHttpConnection.handleRequest(AbstractHttpConnection.java:494) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.AbstractHttpConnection.headerComplete(AbstractHttpConnection.java:971) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.AbstractHttpConnection$RequestHandler.headerComplete(AbstractHttpConnection.java:1033) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.http.HttpParser.parseNext(HttpParser.java:644) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.http.HttpParser.parseAvailable(HttpParser.java:235) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.AsyncHttpConnection.handle(AsyncHttpConnection.java:82) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.io.nio.SelectChannelEndPoint.handle(SelectChannelEndPoint.java:696) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.io.nio.SelectChannelEndPoint$1.run(SelectChannelEndPoint.java:53) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:608) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$3.run(QueuedThreadPool.java:543) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at java.lang.Thread.run(Thread.java:745) [na:1.8.0_40]
+2015-04-17 18:13:52,869 WARN [qtp1883840933-18] org.eclipse.jetty.servlet.ServletHandler [ServletHandler.java:563] /error.jsp
+org.apache.jasper.JasperException: Unable to compile class for JSP: 
+
+An error occurred at line: 6 in the generated java file
+Only a type can be imported. org.epiclouds.spiders.ebay.bean.EbaySpiderBean resolves to a package
+
+An error occurred at line: 7 in the generated java file
+Only a type can be imported. org.epiclouds.spiders.util.StatusManager resolves to a package
+
+Stacktrace:
+	at org.apache.jasper.compiler.DefaultErrorHandler.javacError(DefaultErrorHandler.java:92) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.compiler.ErrorDispatcher.javacError(ErrorDispatcher.java:330) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.compiler.JDTCompiler.generateClass(JDTCompiler.java:443) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:356) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:334) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:321) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.JspCompilationContext.compile(JspCompilationContext.java:592) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.servlet.JspServletWrapper.service(JspServletWrapper.java:328) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.servlet.JspServlet.serviceJspFile(JspServlet.java:313) ~[jasper-6.0.39.jar:6.0.39]
+	at org.apache.jasper.servlet.JspServlet.service(JspServlet.java:260) ~[jasper-6.0.39.jar:6.0.39]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:848) ~[javax.servlet-3.0.0.v201112011016.jar:na]
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:684) ~[jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:503) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:137) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:557) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:231) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1086) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:429) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:193) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1020) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:135) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:116) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.Server.handle(Server.java:370) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.AbstractHttpConnection.handleRequest(AbstractHttpConnection.java:494) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.AbstractHttpConnection.headerComplete(AbstractHttpConnection.java:971) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.AbstractHttpConnection$RequestHandler.headerComplete(AbstractHttpConnection.java:1033) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.http.HttpParser.parseNext(HttpParser.java:644) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.http.HttpParser.parseAvailable(HttpParser.java:235) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.server.AsyncHttpConnection.handle(AsyncHttpConnection.java:82) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.io.nio.SelectChannelEndPoint.handle(SelectChannelEndPoint.java:696) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.io.nio.SelectChannelEndPoint$1.run(SelectChannelEndPoint.java:53) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:608) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$3.run(QueuedThreadPool.java:543) [jetty-all-8.1.16.v20140903.jar:8.1.16.v20140903]
+	at java.lang.Thread.run(Thread.java:745) [na:1.8.0_40]
+2015-04-17 18:18:49,476 INFO [main] org.epiclouds.client.main.MainRun [MainRun.java:121] Start web console in 8002
+2015-04-17 18:18:49,594 INFO [main] org.eclipse.jetty.server.Server [Server.java:272] jetty-8.1.16.v20140903
+2015-04-17 18:18:49,875 INFO [main] org.eclipse.jetty.server.AbstractConnector [AbstractConnector.java:338] Started SelectChannelConnector@0.0.0.0:8002
+2015-04-17 18:18:49,875 INFO [main] org.epiclouds.client.main.MainRun [MainRun.java:147] Start web console finished
+2015-04-17 18:18:54,280 WARN [qtp1883840933-22] org.eclipse.jetty.http.HttpGenerator [HttpGenerator.java:180] Ignoring extra content 
+
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>代理查看</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Bootstrap -->
+<link href="css/bootstrap.css" rel="stylesheet" media="screen">
+</head>
+<body>
+
+	
+<div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container" style="width:100%">
+			<button type="button" class="btn btn
+2015-04-17 18:20:07,494 INFO [main] org.epiclouds.client.main.MainRun [MainRun.java:121] Start web console in 8002
+2015-04-17 18:20:07,597 INFO [main] org.eclipse.jetty.server.Server [Server.java:272] jetty-8.1.16.v20140903
+2015-04-17 18:20:07,813 INFO [main] org.eclipse.jetty.server.AbstractConnector [AbstractConnector.java:338] Started SelectChannelConnector@0.0.0.0:8002
+2015-04-17 18:20:07,813 INFO [main] org.epiclouds.client.main.MainRun [MainRun.java:147] Start web console finished
+2015-04-17 18:20:10,832 WARN [qtp614685048-20] org.eclipse.jetty.http.HttpGenerator [HttpGenerator.java:180] Ignoring extra content 
+
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>代理查看</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Bootstrap -->
+<link href="css/bootstrap.css" rel="stylesheet" media="screen">
+</head>
+<body>
+
+	
+<div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container" style="width:100%">
+			<button type="button" class="btn btn
+2015-04-17 18:20:28,977 INFO [main] org.epiclouds.client.main.MainRun [MainRun.java:121] Start web console in 8002
+2015-04-17 18:20:29,094 INFO [main] org.eclipse.jetty.server.Server [Server.java:272] jetty-8.1.16.v20140903
+2015-04-17 18:20:29,306 INFO [main] org.eclipse.jetty.server.AbstractConnector [AbstractConnector.java:338] Started SelectChannelConnector@0.0.0.0:8002
+2015-04-17 18:20:29,307 INFO [main] org.epiclouds.client.main.MainRun [MainRun.java:147] Start web console finished
+2015-04-17 18:22:14,313 INFO [main] org.epiclouds.client.main.MainRun [MainRun.java:117] Start web console in 8002
+2015-04-17 18:22:14,427 INFO [main] org.eclipse.jetty.server.Server [Server.java:272] jetty-8.1.16.v20140903
+2015-04-17 18:22:14,627 INFO [main] org.eclipse.jetty.server.AbstractConnector [AbstractConnector.java:338] Started SelectChannelConnector@0.0.0.0:8002
+2015-04-17 18:22:14,627 INFO [main] org.epiclouds.client.main.MainRun [MainRun.java:143] Start web console finished
+2015-04-17 18:22:18,167 WARN [qtp614685048-22] org.eclipse.jetty.http.HttpGenerator [HttpGenerator.java:180] Ignoring extra content 
+
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>代理查看</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Bootstrap -->
+<link href="css/bootstrap.css" rel="stylesheet" media="screen">
+</head>
+<body>
+
+	
+<div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container" style="width:100%">
+			<button type="button" class="btn btn
+2015-04-17 18:22:48,497 INFO [main] org.epiclouds.client.main.MainRun [MainRun.java:117] Start web console in 8002
+2015-04-17 18:22:48,602 INFO [main] org.eclipse.jetty.server.Server [Server.java:272] jetty-8.1.16.v20140903
+2015-04-17 18:22:48,815 INFO [main] org.eclipse.jetty.server.AbstractConnector [AbstractConnector.java:338] Started SelectChannelConnector@0.0.0.0:8002
+2015-04-17 18:22:48,815 INFO [main] org.epiclouds.client.main.MainRun [MainRun.java:143] Start web console finished
+2015-04-17 18:22:52,819 WARN [qtp1032000752-22] org.eclipse.jetty.http.HttpGenerator [HttpGenerator.java:180] Ignoring extra content 
+
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>更新默认延时时间</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Bootstrap -->
+<link href="css/bootstrap.css" rel="stylesheet" media="screen">
+</head>
+<body>
+
+	
+<div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container" style="width:100%">
+			<button type="button" cl
+2015-04-17 18:23:14,827 INFO [main] org.epiclouds.client.main.MainRun [MainRun.java:117] Start web console in 8002
+2015-04-17 18:23:14,937 INFO [main] org.eclipse.jetty.server.Server [Server.java:272] jetty-8.1.16.v20140903
+2015-04-17 18:23:15,171 INFO [main] org.eclipse.jetty.server.AbstractConnector [AbstractConnector.java:338] Started SelectChannelConnector@0.0.0.0:8002
+2015-04-17 18:23:15,171 INFO [main] org.epiclouds.client.main.MainRun [MainRun.java:143] Start web console finished
+2015-04-17 18:23:21,190 WARN [qtp1032000752-18] org.eclipse.jetty.http.HttpGenerator [HttpGenerator.java:180] Ignoring extra content 
+
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>代理查看</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Bootstrap -->
+<link href="css/bootstrap.css" rel="stylesheet" media="screen">
+</head>
+<body>
+
+	
+<div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container" style="width:100%">
+			<button type="button" class="btn btn
+2015-04-17 19:50:54,754 WARN [qtp1032000752-22] org.eclipse.jetty.http.HttpGenerator [HttpGenerator.java:180] Ignoring extra content 
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>增加代理</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Bootstrap -->
+<link href="css/bootstrap.css" rel="stylesheet" media="screen">
+</head>
+<body>
+
+	
+<div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container" style="width:100%">
+			<button type="button" class="btn btn-navba
