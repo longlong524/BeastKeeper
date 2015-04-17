@@ -64,6 +64,7 @@
 				<td>认证信息</td>
 				<td>已移除</td>
 				<td>错误信息</td>
+				<td>删除</td>
 			</tr>
 		</thead>
 		<tbody>
@@ -85,6 +86,9 @@
 				</td>
 				<td>
 						<%=eb.getErrorInfo()%>
+				</td>
+				<td>
+					<a  class="btn btn-large btn-danger" href="removeProxy?host=<%=eb.getHost()%>">删除</a>
 				</td>
 			</tr>
 			<%

@@ -26,6 +26,7 @@ import org.epiclouds.netty.NettyHttpServer;
 import org.epiclouds.spiders.webconsole.Login;
 import org.epiclouds.spiders.webconsole.Logout;
 import org.epiclouds.spiders.webconsole.AddProxy;
+import org.epiclouds.spiders.webconsole.RemoveProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -78,7 +79,8 @@ public class MainRun {
 			webapp.setContextPath("/");// url is /jettytest
 			webapp.setResourceBase("./WebRoot");// the folder
 			webapp.addServlet(Login.class, "/login");
-			webapp.addServlet(AddProxy.class, "/addEbaySpider");
+			webapp.addServlet(AddProxy.class, "/addProxy");
+			webapp.addServlet(RemoveProxy.class, "/removeProxy");
 			webapp.addServlet(Logout.class, "/logout");
 			/*webapp.addServlet(new ServletHolder(new GetSourceType()),
 			"/getSourceType");*/
