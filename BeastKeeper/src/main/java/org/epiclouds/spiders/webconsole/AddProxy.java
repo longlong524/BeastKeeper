@@ -1,27 +1,19 @@
 package org.epiclouds.spiders.webconsole;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.epiclouds.handlers.util.MongoManager;
 import org.epiclouds.handlers.util.ProxyManager;
 import org.epiclouds.handlers.util.ProxyStateBean;
+import org.epiclouds.handlers.util.StorageBean;
 
-
-
-
-
-
-
-
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 
 
 /**
@@ -71,6 +63,15 @@ public class AddProxy extends HttpServlet {
 			if(re){
 				request.setAttribute("success",  "增加代理成功！");
 				response.sendRedirect("success.jsp");
+				StorageBean sb=new StorageBean();
+				sb.setDbstr("BeastKeeper");
+				sb.setTablestr("proxy");
+				DBObject data=new BasicDBObject();
+				data.put("host", host);
+				data.put("port", port);
+				data.put("authStr", authStr);
+				sb.setData(data);
+				MongoManager.UpOrInsert(sb);
 			}else{
 				request.setAttribute("error", "增加代理失败！");
 				response.sendRedirect("error.jsp");

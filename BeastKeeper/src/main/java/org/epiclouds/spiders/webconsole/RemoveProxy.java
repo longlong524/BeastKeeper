@@ -12,8 +12,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.epiclouds.handlers.util.MongoManager;
 import org.epiclouds.handlers.util.ProxyManager;
 import org.epiclouds.handlers.util.ProxyStateBean;
+import org.epiclouds.handlers.util.StorageBean;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 
 
 /**
@@ -44,6 +49,13 @@ public class RemoveProxy extends HttpServlet {
 			
 			boolean re=ProxyManager.removeProxy(host);
 			if(re){
+				StorageBean sb=new StorageBean();
+				sb.setDbstr("BeastKeeper");
+				sb.setTablestr("proxy");
+				DBObject con=new BasicDBObject();
+				con.put("host", host);
+				sb.setCondition(con);
+				MongoManager.delete(sb);
 				request.setAttribute("success",  "删除代理成功！");
 				response.sendRedirect("success.jsp");
 			}else{

@@ -26,7 +26,7 @@ public class BPChannel implements Delayed{
 	/**
 	 * the timeout,in milliseconds
 	 */
-	private volatile long timeout=Constants.timeout;
+	private volatile long timeout=Constants.getTimeout();
 	/**
 	 * the proxy bean
 	 */

@@ -12,15 +12,20 @@ package org.epiclouds.client.main;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.net.InetSocketAddress;
+import java.util.List;
 
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.epiclouds.handlers.util.ChannelManager;
+import org.epiclouds.handlers.util.Constants;
+import org.epiclouds.handlers.util.MongoManager;
 import org.epiclouds.handlers.util.ProxyManager;
 import org.epiclouds.handlers.util.ProxyStateBean;
+import org.epiclouds.handlers.util.StorageBean;
 import org.epiclouds.netty.NettyHttpClient;
 import org.epiclouds.netty.NettyHttpServer;
 import org.epiclouds.spiders.webconsole.Login;
@@ -29,6 +34,9 @@ import org.epiclouds.spiders.webconsole.AddProxy;
 import org.epiclouds.spiders.webconsole.RemoveProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 
 /**
  * Discards any incoming data.
@@ -41,7 +49,8 @@ public class MainRun {
    public static final int INNERPORT=8002;
 
    public static void main(String[] args) throws Exception{
-	   initProxyFromFile("valid_proxy");
+	   //initProxyFromFile(Constants.PROXYFILE);
+	   initProxyFromMongo();
 	   NettyHttpClient client=new NettyHttpClient();
 	   ChannelManager manager=new ChannelManager(client);
 	   NettyHttpServer server=new NettyHttpServer(port, manager); 
@@ -49,8 +58,7 @@ public class MainRun {
 	   
    }
 
-	private static void initProxyFromFile(String file) throws NumberFormatException, IOException, InterruptedException {
-		// TODO Auto-generated method stub
+/*	private static void initProxyFromFile(String file) throws NumberFormatException, IOException, InterruptedException {
 		BufferedReader reader=new BufferedReader(new FileReader(file));
 		String tmp=null;
 		while((tmp=reader.readLine())!=null){
@@ -60,6 +68,16 @@ public class MainRun {
 					(ip_port.length>2?ip_port[2]:"")+":"+(ip_port.length>3?ip_port[3]:"")));
 		}
 		reader.close();
+	}*/
+	
+	private static void initProxyFromMongo() throws NumberFormatException, IOException, InterruptedException {
+		StorageBean sb=new StorageBean();
+		sb.setCondition(new BasicDBObject());
+		List<DBObject> re=MongoManager.find(sb);
+		for(DBObject db:re){
+			ProxyManager.addProxy(new ProxyStateBean((String)db.get("host"), 
+					(Integer)db.get("port"),(String)db.get("authStr")));
+		}
 	}
 	
 	/**
