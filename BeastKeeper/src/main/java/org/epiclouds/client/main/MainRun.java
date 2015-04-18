@@ -9,8 +9,11 @@ package org.epiclouds.client.main;
  * @author Administrator
  *
  */
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
+import java.util.Properties;
 
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
@@ -45,8 +48,7 @@ public class MainRun {
 
 	public  static Logger mainlogger = LoggerFactory.getLogger(MainRun.class);
 
-   public static final int port=4080;
-   public static final int INNERPORT=8002;
+
 
    public static void main(String[] args) throws Exception{
 	   //initProxyFromFile(Constants.PROXYFILE);
@@ -56,7 +58,7 @@ public class MainRun {
 	   startInnerJetty();
 	   NettyHttpClient client=new NettyHttpClient();
 	   ChannelManager manager=new ChannelManager(client);
-	   NettyHttpServer server=new NettyHttpServer(port, manager); 
+	   NettyHttpServer server=new NettyHttpServer(Constants.REQUEST_PORT, manager); 
 	   manager.start();
 	   
    }
@@ -72,7 +74,21 @@ public class MainRun {
 		}
 		reader.close();
 	}*/
-	
+   /**
+    * get config from file
+ * @throws IOException 
+ * @throws FileNotFoundException 
+    */
+	private static void getConfig() throws FileNotFoundException, IOException{
+		Properties pros=new Properties();
+		pros.load(new FileInputStream("config"));
+		Constants.REQUEST_TIMEOUT=Integer.parseInt(pros.getProperty("request_timeout", "30000"));
+		Constants.REQUEST_PORT=Integer.parseInt(pros.getProperty("request_port", "4080"));
+		Constants.JETTYPORT=Integer.parseInt(pros.getProperty("jettyport", "8002"));
+		Constants.MONGO_HOST=(pros.getProperty("mongo_host", "localhost"));
+		Constants.MONGO_PORT=Integer.parseInt(pros.getProperty("mongo_port", "27017"));
+	}
+   
 	private static void initProxyFromMongo() throws NumberFormatException, IOException, InterruptedException {
 		StorageBean sb=new StorageBean();
 		sb.setDbstr(Constants.MONGO_DATABASE);
@@ -114,12 +130,12 @@ public class MainRun {
 	 * @throws Exception
 	 */
 	public static void startInnerJetty() throws Exception {
-		mainlogger.info("Start web console in " + INNERPORT);
+		mainlogger.info("Start web console in " + Constants.JETTYPORT);
 		Server server = new Server();
 		try {
 
 			Connector connector = new SelectChannelConnector();
-			connector.setPort(INNERPORT);
+			connector.setPort(Constants.JETTYPORT);
 			server.setConnectors(new Connector[] { connector });
 			WebAppContext webapp = new WebAppContext();
 			webapp.setContextPath("/");// url is /jettytest

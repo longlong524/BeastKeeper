@@ -2173,3 +2173,57 @@ Stacktrace:
 	<div class="navbar-inner">
 		<div class="container" style="width:100%">
 			<button type="button" class="btn btn-navba
+2015-04-17 20:35:03,572 INFO [main] org.epiclouds.client.main.MainRun [MainRun.java:117] Start web console in 8002
+2015-04-17 20:35:03,680 INFO [main] org.eclipse.jetty.server.Server [Server.java:272] jetty-8.1.16.v20140903
+2015-04-17 20:35:03,901 INFO [main] org.eclipse.jetty.server.AbstractConnector [AbstractConnector.java:338] Started SelectChannelConnector@0.0.0.0:8002
+2015-04-17 20:35:03,901 INFO [main] org.epiclouds.client.main.MainRun [MainRun.java:143] Start web console finished
+2015-04-17 20:35:13,190 WARN [qtp1032000752-17] org.eclipse.jetty.http.HttpGenerator [HttpGenerator.java:180] Ignoring extra content 
+
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>代理查看</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Bootstrap -->
+<link href="css/bootstrap.css" rel="stylesheet" media="screen">
+</head>
+<body>
+
+	
+<div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container" style="width:100%">
+			<button type="button" class="btn btn
+2015-04-17 21:11:36,364 INFO [main] org.epiclouds.client.main.MainRun [MainRun.java:133] Start web console in 8002
+2015-04-17 21:11:36,472 INFO [main] org.eclipse.jetty.server.Server [Server.java:272] jetty-8.1.16.v20140903
+2015-04-17 21:11:36,698 INFO [main] org.eclipse.jetty.server.AbstractConnector [AbstractConnector.java:338] Started SelectChannelConnector@0.0.0.0:8002
+2015-04-17 21:11:36,699 INFO [main] org.epiclouds.client.main.MainRun [MainRun.java:159] Start web console finished
+2015-04-17 21:11:42,849 WARN [qtp1032000752-20] org.eclipse.jetty.http.HttpGenerator [HttpGenerator.java:180] Ignoring extra content 
+
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>请求处理情况</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Bootstrap -->
+<link href="css/bootstrap.css" rel="stylesheet" media="screen">
+</head>
+<body>
+
+	
+<div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container" style="width:100%">
+			<button type="button" class="b

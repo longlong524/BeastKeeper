@@ -20,14 +20,17 @@ public class Constants {
 	
 	public final static String CLIENT_HANDLER="clienthandler";
 	
-	public final static int REQUEST_TIMEOUT=30000;
+	
 	
 	public static HttpResponse CONNECT_RESPONSE;
 	
-	public static final String PROXYFILE="valid_proxy";
+	public static  int REQUEST_PORT=4080;
+	public static  int JETTYPORT=8002;
 	
-	public static final String MONGO_HOST="localhost";
-	public static final int MONGO_PORT=27017;
+	public  static int REQUEST_TIMEOUT=30000;
+	
+	public static String MONGO_HOST="localhost";
+	public static int MONGO_PORT=27017;
 	public static final String MONGO_DATABASE="BeastKeeper";
 	public static final String TABLE_TIMEOUT="timeout";
 	public static final String TABLE_PROXY="proxy";
