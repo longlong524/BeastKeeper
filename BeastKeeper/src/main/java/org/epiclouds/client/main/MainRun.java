@@ -52,28 +52,24 @@ public class MainRun {
 
    public static void main(String[] args) throws Exception{
 	   //initProxyFromFile(Constants.PROXYFILE);
-	   initProxyFromMongo();
-	   initTimeoutFromMongo();
-	   initDefaultTimeoutFromMongo();
-	   startInnerJetty();
-	   NettyHttpClient client=new NettyHttpClient();
-	   ChannelManager manager=new ChannelManager(client);
-	   NettyHttpServer server=new NettyHttpServer(Constants.REQUEST_PORT, manager); 
-	   manager.start();
+	   try{
+		   getConfig();
+		   initProxyFromMongo();
+		   initTimeoutFromMongo();
+		   initDefaultTimeoutFromMongo();
+		   startInnerJetty();
+		   NettyHttpClient client=new NettyHttpClient();
+		   ChannelManager manager=new ChannelManager(client);
+		   new NettyHttpServer(Constants.REQUEST_PORT, manager); 
+		   manager.start();
+	   }catch(Exception e){
+		   MainRun.mainlogger.error(e.getLocalizedMessage(), e);
+		   throw e;
+	   }
 	   
    }
 
-/*	private static void initProxyFromFile(String file) throws NumberFormatException, IOException, InterruptedException {
-		BufferedReader reader=new BufferedReader(new FileReader(file));
-		String tmp=null;
-		while((tmp=reader.readLine())!=null){
-			String[] ip_port=tmp.split(":");
-			ProxyManager.addProxy(new ProxyStateBean(ip_port[0], 
-					Integer.parseInt(ip_port[1]),ip_port.length==2?null:
-					(ip_port.length>2?ip_port[2]:"")+":"+(ip_port.length>3?ip_port[3]:"")));
-		}
-		reader.close();
-	}*/
+
    /**
     * get config from file
  * @throws IOException 
@@ -87,6 +83,8 @@ public class MainRun {
 		Constants.JETTYPORT=Integer.parseInt(pros.getProperty("jettyport", "8002"));
 		Constants.MONGO_HOST=(pros.getProperty("mongo_host", "localhost"));
 		Constants.MONGO_PORT=Integer.parseInt(pros.getProperty("mongo_port", "27017"));
+		Constants.REQUEST_AUTHSTRING=pros.getProperty("request_authstring");
+		
 	}
    
 	private static void initProxyFromMongo() throws NumberFormatException, IOException, InterruptedException {
@@ -152,7 +150,6 @@ public class MainRun {
 			server.setHandler(webapp);
 			server.start();
 		} catch (Exception e) {
-			e.printStackTrace();
 			mainlogger.error("start web console error!", e);
 			System.exit(1);
 		}

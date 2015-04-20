@@ -8,27 +8,54 @@ import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 
+/**
+ * config and some constants
+ * @author xianglong
+ *
+ */
 public class Constants {
+	
 	/**
 	 * the host's time out  in milliseconds.
 	 */
 	private static AtomicLong timeout=new AtomicLong(30000);
 	
+	/**
+	 * once max request number from the queue
+	 */
 	public static long max_poll_request_num=100;
 	
+	/**
+	 * max number handle request
+	 */
 	public static long max_poll_handle_num=100;
-	
+	/**
+	 * the httpclient handler
+	 */
 	public final static String CLIENT_HANDLER="clienthandler";
 	
+	/**
+	 * the connect method respose
+	 */
+	public final static HttpResponse CONNECT_RESPONSE;
 	
-	
-	public static HttpResponse CONNECT_RESPONSE;
-	
+	/**
+	 * the request port of client request
+	 */
 	public static  int REQUEST_PORT=4080;
+	public static  String REQUEST_AUTHSTRING=null;
+	/**
+	 * jetty's port
+	 */
 	public static  int JETTYPORT=8002;
 	
+	/**
+	 * request timeout, if timeout the request is abandoned
+	 */
 	public  static int REQUEST_TIMEOUT=30000;
-	
+	/**
+	 * the mongodb database config
+	 */
 	public static String MONGO_HOST="localhost";
 	public static int MONGO_PORT=27017;
 	public static final String MONGO_DATABASE="BeastKeeper";

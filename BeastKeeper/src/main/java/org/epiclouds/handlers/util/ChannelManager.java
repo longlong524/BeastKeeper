@@ -90,8 +90,6 @@ public class ChannelManager implements Runnable{
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 			for(int i=0;i<max_poll_request_num;i++){
 				BPRequest br=requestQue.poll();

@@ -11,6 +11,7 @@ import io.netty.handler.codec.http.HttpMethod;
 
 import java.net.SocketAddress;
 
+import org.epiclouds.client.main.MainRun;
 import org.epiclouds.handlers.util.BPRequest;
 import org.epiclouds.handlers.util.ChannelManager;
 import org.epiclouds.handlers.util.Constants;
@@ -51,6 +52,7 @@ public class NettyHttpServerHandler extends ChannelHandlerAdapter{
 			throws Exception {
 		// TODO Auto-generated method stub
 		ctx.close();
+		MainRun.mainlogger.error(cause.getLocalizedMessage(), cause);
 	}
 
 
@@ -69,6 +71,29 @@ public class NettyHttpServerHandler extends ChannelHandlerAdapter{
 		FullHttpRequest re=(FullHttpRequest)msg;
 		if(re.headers().get("Host")!=null){
 			HostStatusManager.incrementRequestNum(re.headers().get("Host")+"");
+		}
+		if(Constants.REQUEST_AUTHSTRING!=null){
+			try{
+				if(re.headers().get("Proxy-Authorization")==null){
+					ctx.close();
+					return;
+				}
+				String[] auths=(re.headers().get("Proxy-Authorization")+"").split(" ");
+				if(auths.length<2){
+					ctx.close();
+					return;
+				}
+				String authString=new String(new sun.misc.BASE64Decoder().decodeBuffer(auths[1]),"utf-8");
+				if(!Constants.REQUEST_AUTHSTRING.equals(authString)){
+					ctx.close();
+					return;
+				}
+				re.headers().remove("Proxy-Authorization");
+			}catch(Exception e){
+				MainRun.mainlogger.error(e.getLocalizedMessage(), e);
+				ctx.close();
+				return;
+			}
 		}
 		manager.addBPRequest(new BPRequest(ctx.channel(),re));
 	}

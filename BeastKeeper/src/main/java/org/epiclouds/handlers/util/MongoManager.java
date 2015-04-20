@@ -14,6 +14,7 @@ import java.util.Queue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import org.epiclouds.client.main.MainRun;
 import org.joda.time.DateTime;
 
 import com.mongodb.BasicDBObject;
@@ -34,8 +35,7 @@ public class MongoManager {
 			try {
 				client=new MongoClient(Constants.MONGO_HOST	,Constants.MONGO_PORT);
 			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				MainRun.mainlogger.error(e.getLocalizedMessage(), e);
 			}
 	}
 	/**

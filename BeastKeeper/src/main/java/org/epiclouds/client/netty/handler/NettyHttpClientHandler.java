@@ -16,6 +16,7 @@ import io.netty.handler.codec.http.HttpResponseDecoder;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
+import org.epiclouds.client.main.MainRun;
 import org.epiclouds.handlers.util.BPChannel;
 import org.epiclouds.handlers.util.BPRequest;
 import org.epiclouds.handlers.util.Constants;
@@ -122,6 +123,7 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 							NettyHttpClientHandler.this.bp,null));
 					NettyHttpClientHandler.this.bp.getCm().addBPChnnelToFreeQueue(bp);
 				}else{
+					MainRun.mainlogger.error(future.cause().getLocalizedMessage(), future.cause());
 					if(bp!=null){
 						bp.getPsb().setErrorInfo(future.cause().toString());
 					}
