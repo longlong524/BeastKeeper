@@ -181,7 +181,7 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 			return;
 		}
 		FullHttpResponse res=(FullHttpResponse)msg;
-		//System.err.println(res);
+		//System.err.println(res.status());
 		if(System.currentTimeMillis()-time>=Constants.REQUEST_TIMEOUT){
 			if(bp!=null){
 				bp.getPsb().setErrorInfo(request.getHost()+" timeout");

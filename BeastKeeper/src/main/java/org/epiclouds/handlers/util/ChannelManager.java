@@ -96,6 +96,10 @@ public class ChannelManager implements Runnable{
 				if(br==null){
 					break;
 				}
+				if(!br.getCh().isActive()){
+					HostStatusManager.incrementHandledNum(br.getHost());
+					continue;
+				}
 				host_queues.putIfAbsent(br.getHost(), new LinkedBlockingQueue<BPRequest>());
 				LinkedBlockingQueue<BPRequest> lq=host_queues.get(br.getHost());
 				lq.add(br);
@@ -113,6 +117,11 @@ public class ChannelManager implements Runnable{
 				BPRequest re=lq.peek();
 				if(re==null) continue;
 				ProxyStateBean psb=null;
+				if(!re.getCh().isActive()){
+					lq.poll();
+					HostStatusManager.incrementHandledNum(re.getHost());
+					continue;
+				}
 				do{
 					psb=ProxyManager.getHostProxy(host);
 				}while((psb!=null&&psb.isRemoved()));
@@ -139,7 +148,7 @@ public class ChannelManager implements Runnable{
 					continue;
 				}
 				BPChannel ch=dq.poll();
-				if(ch==null||!ch.getCh().isOpen()){
+				if(ch==null||!ch.getCh().isActive()){
 					continue;
 				}
 				if(ch.getPsb().isRemoved()){
