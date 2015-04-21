@@ -1,5 +1,7 @@
 package org.epiclouds.client.netty.handler;
 
+import java.net.SocketAddress;
+
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerAdapter;
@@ -70,8 +72,7 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 		if(bp!=null){
 			bp.getPsb().setErrorInfo(cause.toString());
 		}
-		cause.printStackTrace();
-		super.exceptionCaught(ctx, cause);
+		return;
 	}
 
 
@@ -80,14 +81,14 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		// TODO Auto-generated method stub
-		System.err.println("channel Active");
+		//System.err.println("channel Active");
 		super.channelActive(ctx);
 		ctx.flush();
 	}
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 		// TODO Auto-generated method stub
-		System.err.println("channel Inactive:"+this.bp.getCm().getSizeOfHostChannel(this.bp.getHost()));
+		//System.err.println("channel Inactive:"+this.bp.getCm().getSizeOfHostChannel(this.bp.getHost()));
 		super.channelInactive(ctx);
 		if(!active){
 			return;
@@ -102,6 +103,7 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 		NioSocketChannel nchannel=new NioSocketChannel();
 		ctx.channel().eventLoop().register(nchannel);
 		ChannelFuture cf=nchannel.connect(ctx.channel().remoteAddress());
+		SocketAddress remote_addr=ctx.channel().remoteAddress();
 		cf.addListener(new GenericFutureListener<Future<? super Void>>() {
 
 			@Override
@@ -145,7 +147,7 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 	public void close(ChannelHandlerContext ctx, ChannelPromise promise)
 			throws Exception {
 		// TODO Auto-generated method stub
-		System.err.println("channel close");
+		//System.err.println("channel close");
 		super.close(ctx, promise);
 		if(!active){
 			return;
@@ -170,6 +172,7 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 		//System.err.println(msg);
 		super.write(ctx, msg, promise);
 	}
+	
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg)
 			throws Exception {

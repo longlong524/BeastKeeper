@@ -23,6 +23,7 @@ import io.netty.handler.codec.http.HttpContentDecompressor;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestEncoder;
 import io.netty.handler.codec.http.HttpResponseDecoder;
+import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
@@ -53,29 +54,7 @@ public class NettyHttpClient {
 				@Override
 				protected void initChannel(Channel ch) throws Exception {
 					
-					 ChannelPipeline pipeline = ch.pipeline();
-				        /**
-				         * http-response解码器
-				         * http服务器端对response解码
-				         */
-					 //pipeline.addLast(new SimpleEncoder());
-				       pipeline.addLast(new HttpResponseDecoder());
 
-				       
-				        pipeline.addLast("redeflater", new HttpContentDecompressor());
-				       pipeline.addLast("aggregator", new HttpObjectAggregator(1048576*1024));
-				        /**
-				         * http服务器端对request编码
-				         */
-				        pipeline.addLast( new HttpRequestEncoder());
-
-				        /**
-				         * 压缩
-				         * Compresses an HttpMessage and an HttpContent in gzip or deflate encoding
-				         * while respecting the "Accept-Encoding" header.
-				         * If there is no matching encoding, no compression is done.
-				         */
-				       //pipeline.addLast("deflater", new HttpContentCompressor());
 				       
 				        
 				}	
@@ -94,6 +73,22 @@ public class NettyHttpClient {
 				if(future.isSuccess()){
 					Channel n=((DefaultChannelPromise) future).channel();
 					BPChannel ch=new BPChannel(request.getHost(), n, psb,manager);
+					 ChannelPipeline pipeline = n.pipeline();
+				        /**
+				         * http-response解码器
+				         * http服务器端对response解码
+				         */
+					 //pipeline.addLast(new SimpleEncoder());
+				       pipeline.addLast(new HttpResponseDecoder());
+
+				       
+				        pipeline.addLast("redeflater", new HttpContentDecompressor());
+				       pipeline.addLast("aggregator", new HttpObjectAggregator(1048576*1024));
+
+				        /**
+				         * http服务器端对request编码
+				         */
+				        pipeline.addLast( new HttpRequestEncoder());
 					n.pipeline().addLast(Constants.CLIENT_HANDLER, new NettyHttpClientHandler(ch,request));
 					if(psb.getAuthStr()!=null){
 						request.getRequest().headers().add("Proxy-Authorization", "Basic "
