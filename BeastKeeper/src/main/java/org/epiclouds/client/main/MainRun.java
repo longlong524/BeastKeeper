@@ -29,6 +29,7 @@ import org.epiclouds.handlers.util.TimeOutBean;
 import org.epiclouds.handlers.util.TimeoutManager;
 import org.epiclouds.netty.NettyHttpClient;
 import org.epiclouds.netty.NettyHttpServer;
+import org.epiclouds.spiders.webconsole.AddMultiProxy;
 import org.epiclouds.spiders.webconsole.AddProxy;
 import org.epiclouds.spiders.webconsole.Login;
 import org.epiclouds.spiders.webconsole.Logout;
@@ -140,6 +141,7 @@ public class MainRun {
 			webapp.setResourceBase("./WebRoot");// the folder
 			webapp.addServlet(Login.class, "/login");
 			webapp.addServlet(AddProxy.class, "/addProxy");
+			webapp.addServlet(AddMultiProxy.class, "/addMultiProxy");
 			webapp.addServlet(RemoveProxy.class, "/removeProxy");
 			webapp.addServlet(UpdateTimeOut.class, "/updateTimeOut");
 			webapp.addServlet(UpdateDefaultTimeOut.class, "/updateDefaultTimeOut");
