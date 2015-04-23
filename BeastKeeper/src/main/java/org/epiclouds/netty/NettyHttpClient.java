@@ -88,7 +88,7 @@ public class NettyHttpClient {
 				        /**
 				         * http服务器端对request编码
 				         */
-				        pipeline.addLast( new HttpRequestEncoder());
+				    pipeline.addLast( new HttpRequestEncoder());
 					n.pipeline().addLast(Constants.CLIENT_HANDLER, new NettyHttpClientHandler(ch,request));
 					if(psb.getAuthStr()!=null){
 						request.getRequest().headers().add("Proxy-Authorization", "Basic "
@@ -97,7 +97,42 @@ public class NettyHttpClient {
 					n.writeAndFlush(request.getRequest());
 				}else{
 					psb.setErrorInfo(future.cause().toString());
-					ProxyManager.addHostProxy(request.getHost(), psb);
+					ChannelFuture cf=sb.connect(psb.getHost(), psb.getPort());
+			    	cf.addListener(new GenericFutureListener<Future<? super Void>>() {
+
+						@Override
+						public void operationComplete(Future<? super Void> future)
+								throws Exception {
+							// TODO Auto-generated method stub
+							if(future.isSuccess()){
+								Channel n=((DefaultChannelPromise) future).channel();
+								BPChannel ch=new BPChannel(request.getHost(), n, psb,manager);
+								 ChannelPipeline pipeline = n.pipeline();
+							        /**
+							         * http-response解码器
+							         * http服务器端对response解码
+							         */
+								 //pipeline.addLast(new SimpleEncoder());
+							       pipeline.addLast(new HttpResponseDecoder());
+
+							       
+							        pipeline.addLast("redeflater", new HttpContentDecompressor());
+							       pipeline.addLast("aggregator", new HttpObjectAggregator(1048576*1024));
+
+							        /**
+							         * http服务器端对request编码
+							         */
+							    pipeline.addLast( new HttpRequestEncoder());
+								n.pipeline().addLast(Constants.CLIENT_HANDLER, new NettyHttpClientHandler(ch,null));
+								manager.addBPChnnelToFreeQueue(ch);
+							}else{
+								Thread.sleep(10);
+								psb.setErrorInfo(future.cause().toString());
+								sb.connect(psb.getHost(), psb.getPort()).addListener(this);
+							}
+						}
+			    		
+					});
 					manager.putRequestBack(request);
 				}
 			}
