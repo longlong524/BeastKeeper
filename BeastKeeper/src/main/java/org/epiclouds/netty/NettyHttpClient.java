@@ -52,11 +52,7 @@ public class NettyHttpClient {
 	        sb.group(workers).channel(NioSocketChannel.class).
 	        option(ChannelOption.SO_KEEPALIVE, true).handler(new ChannelInitializer<Channel>() {
 				@Override
-				protected void initChannel(Channel ch) throws Exception {
-					
-
-				       
-				        
+				protected void initChannel(Channel ch) throws Exception {    
 				}	
 	        });
 	        System.out.println("client started");

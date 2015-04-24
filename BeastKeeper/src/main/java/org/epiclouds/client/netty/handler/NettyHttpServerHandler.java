@@ -10,6 +10,7 @@ import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpMethod;
 
 import java.net.SocketAddress;
+import java.nio.charset.Charset;
 
 import org.epiclouds.client.main.MainRun;
 import org.epiclouds.handlers.util.BPRequest;
