@@ -125,6 +125,7 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 							NettyHttpClientHandler.this.bp,null));
 					NettyHttpClientHandler.this.bp.getCm().addBPChnnelToFreeQueue(bp);
 				}else{
+					Thread.sleep(10);
 					MainRun.mainlogger.error(future.cause().getLocalizedMessage(), future.cause());
 					if(bp!=null){
 						bp.getPsb().setErrorInfo(future.cause().toString());

@@ -92,6 +92,7 @@ public class NettyHttpClient {
 					}
 					n.writeAndFlush(request.getRequest());
 				}else{
+					Thread.sleep(10);
 					psb.setErrorInfo(future.cause().toString());
 					ChannelFuture cf=sb.connect(psb.getHost(), psb.getPort());
 			    	cf.addListener(new GenericFutureListener<Future<? super Void>>() {
