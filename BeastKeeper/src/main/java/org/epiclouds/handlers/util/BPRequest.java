@@ -1,6 +1,9 @@
 package org.epiclouds.handlers.util;
 
+import io.netty.buffer.Unpooled;
+import io.netty.buffer.UnpooledHeapByteBuf;
 import io.netty.channel.Channel;
+import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpMethod;
@@ -28,9 +31,15 @@ public class BPRequest {
 	 * @param request
 	 */
 	public BPRequest(Channel ch,FullHttpRequest request){
-		this.ch=ch;
-		this.request=request;
-		setHost(request.headers().get("host")+"");
+		this.setCh(ch);
+		this.setRequest(request);
+		this.setHost((request.headers().get("host")+""));
+	}
+	public String getHost() {
+		return host;
+	}
+	public void setHost(String host) {
+		this.host = host;
 	}
 	public Channel getCh() {
 		return ch;
@@ -44,11 +53,10 @@ public class BPRequest {
 	public void setRequest(FullHttpRequest request) {
 		this.request = request;
 	}
-	public String getHost() {
-		return host;
-	}
-	public void setHost(String host) {
-		this.host = host;
-	}
 	
+	public void release(){
+		if(this.request!=null){
+			this.request.release();
+		}
+	}
 }

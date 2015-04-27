@@ -15,6 +15,7 @@ import io.netty.handler.codec.http.HttpContentDecompressor;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestEncoder;
 import io.netty.handler.codec.http.HttpResponseDecoder;
+import io.netty.util.ReferenceCountUtil;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
@@ -72,6 +73,7 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 		if(bp!=null){
 			bp.getPsb().setErrorInfo(cause.toString());
 		}
+		ctx.close();
 		return;
 	}
 
@@ -125,7 +127,7 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 							NettyHttpClientHandler.this.bp,null));
 					NettyHttpClientHandler.this.bp.getCm().addBPChnnelToFreeQueue(bp);
 				}else{
-					Thread.sleep(10);
+					Thread.sleep(100);
 					MainRun.mainlogger.error(future.cause().getLocalizedMessage(), future.cause());
 					if(bp!=null){
 						bp.getPsb().setErrorInfo(future.cause().toString());
@@ -178,32 +180,37 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 	public void channelRead(ChannelHandlerContext ctx, Object msg)
 			throws Exception {
 		//System.err.println("channelRead");
-		if(!active){
-			return;
-		}
-		FullHttpResponse res=(FullHttpResponse)msg;
-		//System.err.println(res.status());
-		if(System.currentTimeMillis()-time>=Constants.REQUEST_TIMEOUT){
-			if(bp!=null){
-				bp.getPsb().setErrorInfo(request.getHost()+" timeout");
+			if(!active){
+				ReferenceCountUtil.release(msg);
+				return;
 			}
-			this.request=null;
+			FullHttpResponse res=(FullHttpResponse)msg;
+			//System.err.println(res.status());
+			if(System.currentTimeMillis()-time>=Constants.REQUEST_TIMEOUT){
+				if(bp!=null){
+					bp.getPsb().setErrorInfo(request.getHost()+" timeout");
+				}
+				this.request=null;
+				this.bp.setVisit_time(System.currentTimeMillis());
+				this.bp.getCm().addBPChnnelToFreeQueue(bp);
+				ReferenceCountUtil.release(msg);
+				return;
+			}
+			if(request.getCh().isActive()){
+				request.getCh().writeAndFlush(res);
+			}else{
+				ReferenceCountUtil.release(msg);
+			}
+			request=null;
+			if(this.getBp().getPsb().isRemoved()&&active){
+				ctx.channel().close();
+				this.bp.getCm().removeBPChnnelFromFreeQueue(bp);
+				active=false;
+				return;
+			}
 			this.bp.setVisit_time(System.currentTimeMillis());
 			this.bp.getCm().addBPChnnelToFreeQueue(bp);
-			return;
-		}
-		if(request.getCh().isActive()){
-			request.getCh().writeAndFlush(res);
-		}
-		request=null;
-		if(this.getBp().getPsb().isRemoved()&&active){
-			ctx.channel().close();
-			this.bp.getCm().removeBPChnnelFromFreeQueue(bp);
-			active=false;
-			return;
-		}
-		this.bp.setVisit_time(System.currentTimeMillis());
-		this.bp.getCm().addBPChnnelToFreeQueue(bp);
+			
 	}
 
 	

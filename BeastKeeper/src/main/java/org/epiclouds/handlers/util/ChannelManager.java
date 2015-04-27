@@ -1,5 +1,8 @@
 package org.epiclouds.handlers.util;
 
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.GenericFutureListener;
+
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -45,10 +48,17 @@ public class ChannelManager implements Runnable{
 		this.client=client;
 	}
 	public void putRequestBack(BPRequest request){
-		requestQue.add(request);
+		try {
+			requestQue.put(request);
+		} catch (InterruptedException e) {
+		}
 	}
 	public void addBPRequest(BPRequest request){
-		requestQue.add(request);
+		try {
+			requestQue.put(request);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+		}
 	}
 	public int getSizeOfHostChannel(String host){
 		DelayQueue<BPChannel> dq=freeChannels.get(host);
@@ -98,6 +108,7 @@ public class ChannelManager implements Runnable{
 				}
 				if(!br.getCh().isActive()){
 					HostStatusManager.incrementHandledNum(br.getHost());
+					br.release();
 					continue;
 				}
 				host_queues.putIfAbsent(br.getHost(), new LinkedBlockingQueue<BPRequest>());
@@ -114,11 +125,12 @@ public class ChannelManager implements Runnable{
 				}
 				String host=iter.next();
 				LinkedBlockingQueue<BPRequest> lq=host_queues.get(host);
-				BPRequest re=lq.peek();
+				final BPRequest re=lq.peek();
 				if(re==null) continue;
 				ProxyStateBean psb=null;
 				if(!re.getCh().isActive()){
 					lq.poll();
+					re.release();
 					HostStatusManager.incrementHandledNum(re.getHost());
 					continue;
 				}

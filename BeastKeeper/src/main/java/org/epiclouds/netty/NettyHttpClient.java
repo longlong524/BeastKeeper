@@ -123,7 +123,7 @@ public class NettyHttpClient {
 								n.pipeline().addLast(Constants.CLIENT_HANDLER, new NettyHttpClientHandler(ch,null));
 								manager.addBPChnnelToFreeQueue(ch);
 							}else{
-								Thread.sleep(10);
+								Thread.sleep(100);
 								psb.setErrorInfo(future.cause().toString());
 								sb.connect(psb.getHost(), psb.getPort()).addListener(this);
 							}
