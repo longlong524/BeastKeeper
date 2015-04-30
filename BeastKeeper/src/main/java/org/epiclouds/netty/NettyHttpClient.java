@@ -35,6 +35,7 @@ import org.epiclouds.handlers.util.ChannelManager;
 import org.epiclouds.handlers.util.Constants;
 import org.epiclouds.handlers.util.ProxyManager;
 import org.epiclouds.handlers.util.ProxyStateBean;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -93,7 +94,7 @@ public class NettyHttpClient {
 					n.writeAndFlush(request.getRequest());
 				}else{
 					Thread.sleep(10);
-					psb.setErrorInfo(future.cause().toString());
+					psb.setErrorInfo(new DateTime().toString("yyyy-MM-dd HH:mm:ss")+future.cause().toString());
 					ChannelFuture cf=sb.connect(psb.getHost(), psb.getPort());
 			    	cf.addListener(new GenericFutureListener<Future<? super Void>>() {
 
@@ -124,7 +125,7 @@ public class NettyHttpClient {
 								manager.addBPChnnelToFreeQueue(ch);
 							}else{
 								Thread.sleep(100);
-								psb.setErrorInfo(future.cause().toString());
+								psb.setErrorInfo(new DateTime().toString("yyyy-MM-dd HH:mm:ss")+future.cause().toString());
 								sb.connect(psb.getHost(), psb.getPort()).addListener(this);
 							}
 						}

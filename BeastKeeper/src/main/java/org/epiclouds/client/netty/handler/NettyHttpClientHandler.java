@@ -1,5 +1,6 @@
 package org.epiclouds.client.netty.handler;
 
+import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 
 import io.netty.channel.Channel;
@@ -25,13 +26,14 @@ import org.epiclouds.handlers.util.BPRequest;
 import org.epiclouds.handlers.util.Constants;
 import org.epiclouds.handlers.util.HostStatusManager;
 import org.epiclouds.handlers.util.TimeoutManager;
+import org.joda.time.DateTime;
 
 /**
  * @author Administrator
  *
  */
 public class NettyHttpClientHandler extends ChannelHandlerAdapter{
-	final private BPChannel bp;
+	private final BPChannel bp;
 	private volatile BPRequest request;
 	private volatile boolean active=true;
 	private volatile long time=System.currentTimeMillis();
@@ -71,7 +73,7 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
 			throws Exception {
 		if(bp!=null){
-			bp.getPsb().setErrorInfo(cause.toString());
+			bp.getPsb().setErrorInfo(new DateTime().toString("yyyy-MM-dd HH:mm:ss")+cause.toString());
 		}
 		ctx.close();
 		return;
@@ -104,8 +106,8 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 		ctx.channel().close();
 		NioSocketChannel nchannel=new NioSocketChannel();
 		ctx.channel().eventLoop().register(nchannel);
-		ChannelFuture cf=nchannel.connect(ctx.channel().remoteAddress());
-		SocketAddress remote_addr=ctx.channel().remoteAddress();
+		final SocketAddress remoteAddr=	new InetSocketAddress(bp.getPsb().getHost(),bp.getPsb().getPort());
+		ChannelFuture cf=nchannel.connect(remoteAddr);
 		cf.addListener(new GenericFutureListener<Future<? super Void>>() {
 
 			@Override
@@ -130,11 +132,11 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 					Thread.sleep(100);
 					MainRun.mainlogger.error(future.cause().getLocalizedMessage(), future.cause());
 					if(bp!=null){
-						bp.getPsb().setErrorInfo(future.cause().toString());
+						bp.getPsb().setErrorInfo(new DateTime().toString("yyyy-MM-dd HH:mm:ss")+future.cause().toString());
 					}
 					NioSocketChannel nchannel=new NioSocketChannel();
 					n.eventLoop().register(nchannel);
-					ChannelFuture cf2=nchannel.connect(NettyHttpClientHandler.this.bp.getCh().remoteAddress());
+					ChannelFuture cf2=nchannel.connect(remoteAddr);
 					cf2.addListener(this);
 				}
 			}
