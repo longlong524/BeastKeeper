@@ -3,6 +3,7 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Map"%>
 <%@page import="org.epiclouds.handlers.util.*"%>
+<%@page import="java.util.*"%>
 <%@page import="java.net.SocketAddress"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -55,7 +56,10 @@
 		%>
 		
 		
-			<fieldset>所有代理</fieldset>
+			<fieldset>所有代理:<%
+			List<ProxyStateBean> ppss=ProxyManager.getProxyOrderByHost();
+			out.write(ppss.size()+"");
+			%></fieldset>
 		<table class="table table-bordered">
 		<thead>
 			<tr class="success">
@@ -69,7 +73,7 @@
 		</thead>
 		<tbody>
 		<%
-			for(ProxyStateBean eb:ProxyManager.getProxyOrderByHost()){
+			for(ProxyStateBean eb:ppss){
 		%>
 			<tr>
 				<td>

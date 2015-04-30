@@ -5,6 +5,10 @@
   <name>beastkeeper</name>
   <version>0.1</version>
   <description>管理爬虫代理的工程</description>
+  
+   <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
   <build>
     <plugins>
       <plugin>
