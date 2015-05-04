@@ -190,6 +190,7 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 			//System.err.println(res.status());
 			if(System.currentTimeMillis()-time>=Constants.REQUEST_TIMEOUT){
 				this.request=null;
+				this.bp.getPsb().setErrorInfo(new DateTime().toString("yyyy-MM-dd HH:mm:ss")+"timeout:"+Constants.REQUEST_TIMEOUT);
 				this.bp.setVisit_time(System.currentTimeMillis());
 				this.bp.getCm().addBPChnnelToFreeQueue(bp);
 				ReferenceCountUtil.release(msg);
@@ -200,6 +201,7 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 			}else{
 				ReferenceCountUtil.release(msg);
 			}
+			this.bp.getPsb().setErrorInfo(null);
 			request=null;
 			if(this.getBp().getPsb().isRemoved()&&active){
 				ctx.channel().close();
