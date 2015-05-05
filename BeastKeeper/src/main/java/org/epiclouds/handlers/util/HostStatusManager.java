@@ -42,7 +42,13 @@ public class HostStatusManager {
 		return re;
 	}
 	
-
+	public  static HostStatusBean getRequestNum(String host){
+		if(host==null){
+			return null;
+		}
+		all_status.putIfAbsent(host, new HostStatusBean(host));
+		return all_status.get(host);
+	}
 	
 	
 }

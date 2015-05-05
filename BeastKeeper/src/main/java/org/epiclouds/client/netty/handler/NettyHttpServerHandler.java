@@ -16,6 +16,7 @@ import org.epiclouds.client.main.MainRun;
 import org.epiclouds.handlers.util.BPRequest;
 import org.epiclouds.handlers.util.ChannelManager;
 import org.epiclouds.handlers.util.Constants;
+import org.epiclouds.handlers.util.HostStatusBean;
 import org.epiclouds.handlers.util.HostStatusManager;
 
 
@@ -95,6 +96,11 @@ public class NettyHttpServerHandler extends ChannelHandlerAdapter{
 				ctx.close();
 				return;
 			}
+		}
+		HostStatusBean hs=HostStatusManager.getRequestNum(re.headers().get("Host")+"");
+		if(hs!=null&&(hs.getRequest_num().get()-hs.getHandled_num().get()>Constants.MAX_UNHADNLED_REQUEST)){
+			ctx.close();
+			return;
 		}
 		manager.addBPRequest(new BPRequest(ctx.channel(),re));
 	}

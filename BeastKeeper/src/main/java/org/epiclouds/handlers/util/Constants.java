@@ -54,6 +54,10 @@ public class Constants {
 	 */
 	public  static int REQUEST_TIMEOUT=30000;
 	/**
+	 * the max num of unhandled request
+	 */
+	public static int MAX_UNHADNLED_REQUEST=500;
+	/**
 	 * the mongodb database config
 	 */
 	public static String MONGO_HOST="localhost";

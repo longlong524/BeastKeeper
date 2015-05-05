@@ -85,7 +85,7 @@ public class MainRun {
 		Constants.MONGO_HOST=(pros.getProperty("mongo_host", "localhost"));
 		Constants.MONGO_PORT=Integer.parseInt(pros.getProperty("mongo_port", "27017"));
 		Constants.REQUEST_AUTHSTRING=pros.getProperty("request_authstring");
-		
+		Constants.MAX_UNHADNLED_REQUEST=Integer.parseInt(pros.getProperty("max_unhandled_request","500"));
 	}
    
 	private static void initProxyFromMongo() throws NumberFormatException, IOException, InterruptedException {
