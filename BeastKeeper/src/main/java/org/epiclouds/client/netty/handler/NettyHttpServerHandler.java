@@ -73,7 +73,15 @@ public class NettyHttpServerHandler extends ChannelHandlerAdapter{
 			return;
 		}
 		FullHttpRequest re=(FullHttpRequest)msg;
-
+		HostStatusBean hs=HostStatusManager.getRequestNum(re.headers().get("Host")+"");
+		if(hs!=null&&(hs.getRequest_num().get()-hs.getHandled_num().get()>Constants.MAX_UNHADNLED_REQUEST)){
+			ReferenceCountUtil.release(msg);
+			ctx.close();
+			return;
+		}
+		if(re.headers().get("Host")!=null){
+			HostStatusManager.incrementRequestNum(re.headers().get("Host")+"");
+		}
 		if(Constants.REQUEST_AUTHSTRING!=null){
 			try{
 				if(re.headers().get("Proxy-Authorization")==null){
@@ -101,15 +109,7 @@ public class NettyHttpServerHandler extends ChannelHandlerAdapter{
 				return;
 			}
 		}
-		HostStatusBean hs=HostStatusManager.getRequestNum(re.headers().get("Host")+"");
-		if(hs!=null&&(hs.getRequest_num().get()-hs.getHandled_num().get()>Constants.MAX_UNHADNLED_REQUEST)){
-			ReferenceCountUtil.release(msg);
-			ctx.close();
-			return;
-		}
-		if(re.headers().get("Host")!=null){
-			HostStatusManager.incrementRequestNum(re.headers().get("Host")+"");
-		}
+
 		manager.addBPRequest(new BPRequest(ctx.channel(),re));
 	}
 
