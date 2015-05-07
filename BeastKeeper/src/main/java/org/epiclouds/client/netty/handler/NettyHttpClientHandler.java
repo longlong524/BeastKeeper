@@ -2,6 +2,7 @@ package org.epiclouds.client.netty.handler;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+import java.util.concurrent.TimeUnit;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -16,6 +17,8 @@ import io.netty.handler.codec.http.HttpContentDecompressor;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestEncoder;
 import io.netty.handler.codec.http.HttpResponseDecoder;
+import io.netty.handler.timeout.ReadTimeoutException;
+import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.util.ReferenceCountUtil;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
@@ -118,18 +121,21 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 					NettyHttpClientHandler.this.bp.setCh(n);
 					 n.pipeline().addLast(new HttpResponseDecoder());
 
-				       
+					 n.pipeline().addLast("readtimeouthandler",new ReadTimeoutHandler(Constants.REQUEST_TIMEOUT,TimeUnit.MILLISECONDS));
 				       n. pipeline().addLast("redeflater", new HttpContentDecompressor());
 				       n.pipeline().addLast("aggregator", new HttpObjectAggregator(1048576*1024));
 				        /**
 				         * http服务器端对request编码
 				         */
-				        n.pipeline().addLast( new HttpRequestEncoder());
+				       n.pipeline().addLast( new HttpRequestEncoder());
 					n.pipeline().addLast(Constants.CLIENT_HANDLER, new NettyHttpClientHandler(
 							NettyHttpClientHandler.this.bp,null));
 					NettyHttpClientHandler.this.bp.getCm().addBPChnnelToFreeQueue(bp);
+					if(bp!=null){
+						bp.getPsb().setErrorInfo(null);
+					}
 				}else{
-					Thread.sleep(100);
+					Thread.sleep(10);
 					MainRun.mainlogger.error(future.cause().getLocalizedMessage(), future.cause());
 					if(bp!=null){
 						bp.getPsb().setErrorInfo(new DateTime().toString("yyyy-MM-dd HH:mm:ss")+future.cause().toString());

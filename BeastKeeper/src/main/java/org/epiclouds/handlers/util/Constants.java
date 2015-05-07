@@ -52,7 +52,7 @@ public class Constants {
 	/**
 	 * request timeout, if timeout the request is abandoned
 	 */
-	public  static int REQUEST_TIMEOUT=30000;
+	public  static int REQUEST_TIMEOUT=60000;
 	/**
 	 * the max num of unhandled request
 	 */

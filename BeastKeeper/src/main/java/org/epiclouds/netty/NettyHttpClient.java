@@ -9,6 +9,8 @@ package org.epiclouds.netty;
  * @author Administrator
  *
  */
+import java.util.concurrent.TimeUnit;
+
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -77,7 +79,7 @@ public class NettyHttpClient {
 				         */
 					 //pipeline.addLast(new SimpleEncoder());
 				       pipeline.addLast(new HttpResponseDecoder());
-
+				       n.pipeline().addLast("readtimeouthandler",new ReadTimeoutHandler(Constants.REQUEST_TIMEOUT,TimeUnit.MILLISECONDS));
 				       
 				        pipeline.addLast("redeflater", new HttpContentDecompressor());
 				       pipeline.addLast("aggregator", new HttpObjectAggregator(1048576*1024));
@@ -92,8 +94,9 @@ public class NettyHttpClient {
 							+new sun.misc.BASE64Encoder().encode(psb.getAuthStr().getBytes()));
 					}
 					n.writeAndFlush(request.getRequest());
+					psb.setErrorInfo(null);
 				}else{
-					Thread.sleep(10);
+					Thread.sleep(5);
 					psb.setErrorInfo(new DateTime().toString("yyyy-MM-dd HH:mm:ss")+future.cause().toString());
 					ChannelFuture cf=sb.connect(psb.getHost(), psb.getPort());
 			    	cf.addListener(new GenericFutureListener<Future<? super Void>>() {
@@ -112,7 +115,7 @@ public class NettyHttpClient {
 							         */
 								 //pipeline.addLast(new SimpleEncoder());
 							       pipeline.addLast(new HttpResponseDecoder());
-
+							       n.pipeline().addLast("readtimeouthandler",new ReadTimeoutHandler(Constants.REQUEST_TIMEOUT,TimeUnit.MILLISECONDS));
 							       
 							        pipeline.addLast("redeflater", new HttpContentDecompressor());
 							       pipeline.addLast("aggregator", new HttpObjectAggregator(1048576*1024));
@@ -122,9 +125,10 @@ public class NettyHttpClient {
 							         */
 							    pipeline.addLast( new HttpRequestEncoder());
 								n.pipeline().addLast(Constants.CLIENT_HANDLER, new NettyHttpClientHandler(ch,null));
+								psb.setErrorInfo(null);
 								manager.addBPChnnelToFreeQueue(ch);
 							}else{
-								Thread.sleep(100);
+								Thread.sleep(5);
 								psb.setErrorInfo(new DateTime().toString("yyyy-MM-dd HH:mm:ss")+future.cause().toString());
 								sb.connect(psb.getHost(), psb.getPort()).addListener(this);
 							}
