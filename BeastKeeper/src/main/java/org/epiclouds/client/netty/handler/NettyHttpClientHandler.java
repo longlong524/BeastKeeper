@@ -121,7 +121,7 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 					NettyHttpClientHandler.this.bp.setCh(n);
 					 n.pipeline().addLast(new HttpResponseDecoder());
 
-					 n.pipeline().addLast("readtimeouthandler",new ReadTimeoutHandler(Constants.REQUEST_TIMEOUT,TimeUnit.MILLISECONDS));
+					 n.pipeline().addLast("readtimeouthandler",new ReadTimeoutHandler(Constants.getREQUEST_TIMEOUT(),TimeUnit.MILLISECONDS));
 				       n. pipeline().addLast("redeflater", new HttpContentDecompressor());
 				       n.pipeline().addLast("aggregator", new HttpObjectAggregator(1048576*1024));
 				        /**
@@ -194,9 +194,9 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 			}
 			FullHttpResponse res=(FullHttpResponse)msg;
 			//System.err.println(res.status());
-			if(System.currentTimeMillis()-time>=Constants.REQUEST_TIMEOUT){
+			if(System.currentTimeMillis()-time>=Constants.getREQUEST_TIMEOUT()){
 				this.request=null;
-				this.bp.getPsb().setErrorInfo(new DateTime().toString("yyyy-MM-dd HH:mm:ss")+"timeout:"+Constants.REQUEST_TIMEOUT);
+				this.bp.getPsb().setErrorInfo(new DateTime().toString("yyyy-MM-dd HH:mm:ss")+"timeout:"+Constants.getREQUEST_TIMEOUT());
 				this.bp.setVisit_time(System.currentTimeMillis());
 				this.bp.getCm().addBPChnnelToFreeQueue(bp);
 				ReferenceCountUtil.release(msg);

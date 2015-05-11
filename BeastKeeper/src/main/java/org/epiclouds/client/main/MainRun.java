@@ -35,6 +35,7 @@ import org.epiclouds.spiders.webconsole.Login;
 import org.epiclouds.spiders.webconsole.Logout;
 import org.epiclouds.spiders.webconsole.RemoveProxy;
 import org.epiclouds.spiders.webconsole.UpdateDefaultTimeOut;
+import org.epiclouds.spiders.webconsole.UpdateRunningConfig;
 import org.epiclouds.spiders.webconsole.UpdateTimeOut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,13 +80,13 @@ public class MainRun {
 	private static void getConfig() throws FileNotFoundException, IOException{
 		Properties pros=new Properties();
 		pros.load(new FileInputStream("config"));
-		Constants.REQUEST_TIMEOUT=Integer.parseInt(pros.getProperty("request_timeout", "30000"));
+		Constants.setREQUEST_TIMEOUT(Integer.parseInt(pros.getProperty("request_timeout", "30000")));
 		Constants.REQUEST_PORT=Integer.parseInt(pros.getProperty("request_port", "4080"));
 		Constants.JETTYPORT=Integer.parseInt(pros.getProperty("jettyport", "8002"));
 		Constants.MONGO_HOST=(pros.getProperty("mongo_host", "localhost"));
 		Constants.MONGO_PORT=Integer.parseInt(pros.getProperty("mongo_port", "27017"));
-		Constants.REQUEST_AUTHSTRING=pros.getProperty("request_authstring");
-		Constants.MAX_UNHADNLED_REQUEST=Integer.parseInt(pros.getProperty("max_unhandled_request","500"));
+		Constants.setREQUEST_AUTHSTRING(pros.getProperty("request_authstring"));
+		Constants.setMAX_UNHADNLED_REQUEST(Integer.parseInt(pros.getProperty("max_unhandled_request","500")));
 	}
    
 	private static void initProxyFromMongo() throws NumberFormatException, IOException, InterruptedException {
@@ -146,6 +147,7 @@ public class MainRun {
 			webapp.addServlet(UpdateTimeOut.class, "/updateTimeOut");
 			webapp.addServlet(UpdateDefaultTimeOut.class, "/updateDefaultTimeOut");
 			webapp.addServlet(Logout.class, "/logout");
+			webapp.addServlet(UpdateRunningConfig.class, "/updateRunningConfig");
 			/*webapp.addServlet(new ServletHolder(new GetSourceType()),
 			"/getSourceType");*/
 

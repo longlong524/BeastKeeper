@@ -74,7 +74,7 @@ public class NettyHttpServerHandler extends ChannelHandlerAdapter{
 		}
 		FullHttpRequest re=(FullHttpRequest)msg;
 		HostStatusBean hs=HostStatusManager.getRequestNum(re.headers().get("Host")+"");
-		if(hs!=null&&(hs.getRequest_num().get()-hs.getHandled_num().get()>Constants.MAX_UNHADNLED_REQUEST)){
+		if(hs!=null&&(hs.getRequest_num().get()-hs.getHandled_num().get()>Constants.getMAX_UNHADNLED_REQUEST())){
 			ReferenceCountUtil.release(msg);
 			ctx.close();
 			return;
@@ -82,7 +82,7 @@ public class NettyHttpServerHandler extends ChannelHandlerAdapter{
 		if(re.headers().get("Host")!=null){
 			HostStatusManager.incrementRequestNum(re.headers().get("Host")+"");
 		}
-		if(Constants.REQUEST_AUTHSTRING!=null){
+		if(Constants.getREQUEST_AUTHSTRING()!=null){
 			try{
 				if(re.headers().get("Proxy-Authorization")==null){
 					ReferenceCountUtil.release(msg);
@@ -96,7 +96,7 @@ public class NettyHttpServerHandler extends ChannelHandlerAdapter{
 					return;
 				}
 				String authString=new String(new sun.misc.BASE64Decoder().decodeBuffer(auths[1]),"utf-8");
-				if(!Constants.REQUEST_AUTHSTRING.equals(authString)){
+				if(!Constants.getREQUEST_AUTHSTRING().equals(authString)){
 					ReferenceCountUtil.release(msg);
 					ctx.close();
 					return;

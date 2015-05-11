@@ -1,7 +1,0 @@
-request_port=4080
-jettyport=8002
-request_timeout=30000
-mongo_host=localhost
-mongo_port=27017
-request_authstring=yuanshuju:yuanshuju
-max_unhandled_request=500

@@ -1,12 +1,11 @@
 package org.epiclouds.handlers.util;
 
-import java.util.concurrent.atomic.AtomicLong;
-
 import io.netty.handler.codec.http.DefaultHttpResponse;
-import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
+
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * config and some constants
@@ -16,7 +15,7 @@ import io.netty.handler.codec.http.HttpVersion;
 public class Constants {
 	
 	/**
-	 * the host's time out  in milliseconds.
+	 * the host's default time out  in milliseconds.
 	 */
 	private static AtomicLong timeout=new AtomicLong(30000);
 	
@@ -43,24 +42,55 @@ public class Constants {
 	 * the request port of client request
 	 */
 	public static  int REQUEST_PORT=4080;
-	public static  String REQUEST_AUTHSTRING=null;
+
 	/**
 	 * jetty's port
 	 */
 	public static  int JETTYPORT=8002;
 	
+	private static volatile  String REQUEST_AUTHSTRING=null;
 	/**
 	 * request timeout, if timeout the request is abandoned
 	 */
-	public  static int REQUEST_TIMEOUT=60000;
+	private volatile  static int REQUEST_TIMEOUT=60000;
 	/**
 	 * the max num of unhandled request
 	 */
-	public static int MAX_UNHADNLED_REQUEST=500;
+	private volatile static int MAX_UNHADNLED_REQUEST=500;
 	/**
 	 * the mongodb database config
 	 */
 	public static String MONGO_HOST="localhost";
+	public static String getREQUEST_AUTHSTRING() {
+		return REQUEST_AUTHSTRING;
+	}
+
+	public static void setREQUEST_AUTHSTRING(String rEQUEST_AUTHSTRING) {
+		REQUEST_AUTHSTRING = rEQUEST_AUTHSTRING;
+	}
+
+	public static int getREQUEST_TIMEOUT() {
+		return REQUEST_TIMEOUT;
+	}
+
+	public static void setREQUEST_TIMEOUT(int rEQUEST_TIMEOUT) {
+		REQUEST_TIMEOUT = rEQUEST_TIMEOUT;
+	}
+	public static void setREQUEST_TIMEOUT(String rEQUEST_TIMEOUT) {
+		REQUEST_TIMEOUT = Integer.parseInt(rEQUEST_TIMEOUT);
+	}
+
+	public static int getMAX_UNHADNLED_REQUEST() {
+		return MAX_UNHADNLED_REQUEST;
+	}
+
+	public static void setMAX_UNHADNLED_REQUEST(int mAX_UNHADNLED_REQUEST) {
+		MAX_UNHADNLED_REQUEST = mAX_UNHADNLED_REQUEST;
+	}
+	public static void setMAX_UNHADNLED_REQUEST(String mAX_UNHADNLED_REQUEST) {
+		MAX_UNHADNLED_REQUEST = Integer.parseInt(mAX_UNHADNLED_REQUEST);
+	}
+
 	public static int MONGO_PORT=27017;
 	public static final String MONGO_DATABASE="BeastKeeper";
 	public static final String TABLE_TIMEOUT="timeout";

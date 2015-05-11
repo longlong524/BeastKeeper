@@ -38,7 +38,7 @@ public class UpdateTimeOut extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		doPost(request, response);
 	}
 
 	/**

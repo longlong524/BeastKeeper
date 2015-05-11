@@ -98,7 +98,7 @@ public class ChannelManager implements Runnable{
 	public void run() {
 		while(true){
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(20);
 			} catch (InterruptedException e) {
 			}
 			for(int i=0;i<max_poll_request_num;i++){

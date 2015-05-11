@@ -79,7 +79,7 @@ public class NettyHttpClient {
 				         */
 					 //pipeline.addLast(new SimpleEncoder());
 				       pipeline.addLast(new HttpResponseDecoder());
-				       n.pipeline().addLast("readtimeouthandler",new ReadTimeoutHandler(Constants.REQUEST_TIMEOUT,TimeUnit.MILLISECONDS));
+				       n.pipeline().addLast("readtimeouthandler",new ReadTimeoutHandler(Constants.getREQUEST_TIMEOUT(),TimeUnit.MILLISECONDS));
 				       
 				        pipeline.addLast("redeflater", new HttpContentDecompressor());
 				       pipeline.addLast("aggregator", new HttpObjectAggregator(1048576*1024));
@@ -115,7 +115,7 @@ public class NettyHttpClient {
 							         */
 								 //pipeline.addLast(new SimpleEncoder());
 							       pipeline.addLast(new HttpResponseDecoder());
-							       n.pipeline().addLast("readtimeouthandler",new ReadTimeoutHandler(Constants.REQUEST_TIMEOUT,TimeUnit.MILLISECONDS));
+							       n.pipeline().addLast("readtimeouthandler",new ReadTimeoutHandler(Constants.getREQUEST_TIMEOUT(),TimeUnit.MILLISECONDS));
 							       
 							        pipeline.addLast("redeflater", new HttpContentDecompressor());
 							       pipeline.addLast("aggregator", new HttpObjectAggregator(1048576*1024));
