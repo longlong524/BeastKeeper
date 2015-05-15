@@ -85,6 +85,9 @@ public class MainRun {
 		Constants.JETTYPORT=Integer.parseInt(pros.getProperty("jettyport", "8002"));
 		Constants.MONGO_HOST=(pros.getProperty("mongo_host", "localhost"));
 		Constants.MONGO_PORT=Integer.parseInt(pros.getProperty("mongo_port", "27017"));
+		Constants.setMongo_user(pros.getProperty("mongo_user", "yuanshuju"));
+		Constants.setMongo_pass(pros.getProperty("mongo_pass", "554444"));
+		Constants.setMongo_authticateDatabase(pros.getProperty("mongo_authticateDatabase", "admin"));
 		Constants.setREQUEST_AUTHSTRING(pros.getProperty("request_authstring"));
 		Constants.setMAX_UNHADNLED_REQUEST(Integer.parseInt(pros.getProperty("max_unhandled_request","500")));
 	}

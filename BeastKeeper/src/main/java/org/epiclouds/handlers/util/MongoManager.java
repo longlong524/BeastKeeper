@@ -6,6 +6,7 @@
 package org.epiclouds.handlers.util;
 
 import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,6 +25,8 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
+import com.mongodb.MongoCredential;
+import com.mongodb.ServerAddress;
 
 /**
  * @author Administrator
@@ -33,7 +36,10 @@ public class MongoManager {
 	private static MongoClient client;
 	static{
 			try {
-				client=new MongoClient(Constants.MONGO_HOST	,Constants.MONGO_PORT);
+				MongoCredential credential = MongoCredential.createCredential(Constants.getMongo_user(),
+						Constants.getMongo_authticateDatabase(), Constants.getMongo_pass().toCharArray());
+				client = new MongoClient(new ServerAddress(Constants.MONGO_HOST	,Constants.MONGO_PORT), 
+						Arrays.asList(credential));
 			} catch (UnknownHostException e) {
 				MainRun.mainlogger.error(e.getLocalizedMessage(), e);
 			}

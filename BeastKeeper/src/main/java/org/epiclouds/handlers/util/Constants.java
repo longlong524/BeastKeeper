@@ -61,6 +61,130 @@ public class Constants {
 	 * the mongodb database config
 	 */
 	public static String MONGO_HOST="localhost";
+
+
+	public static int MONGO_PORT=27017;
+	private  static String mongo_user="yuanshuju";
+	private  static String mongo_pass="123677";
+	private  static String mongo_authticateDatabase="admin";
+	public static final String MONGO_DATABASE="BeastKeeper";
+	public static final String TABLE_TIMEOUT="timeout";
+	public static final String TABLE_PROXY="proxy";
+	public static final String TABLE_DEFALTTIMEOUT="defaulttimeout";
+	
+	public static long getMax_poll_request_num() {
+		return max_poll_request_num;
+	}
+
+	public static void setMax_poll_request_num(long max_poll_request_num) {
+		Constants.max_poll_request_num = max_poll_request_num;
+	}
+
+	public static long getMax_poll_handle_num() {
+		return max_poll_handle_num;
+	}
+
+	public static void setMax_poll_handle_num(long max_poll_handle_num) {
+		Constants.max_poll_handle_num = max_poll_handle_num;
+	}
+
+	public static int getREQUEST_PORT() {
+		return REQUEST_PORT;
+	}
+
+	public static void setREQUEST_PORT(int rEQUEST_PORT) {
+		REQUEST_PORT = rEQUEST_PORT;
+	}
+
+	public static int getJETTYPORT() {
+		return JETTYPORT;
+	}
+
+	public static void setJETTYPORT(int jETTYPORT) {
+		JETTYPORT = jETTYPORT;
+	}
+
+	public static String getMONGO_HOST() {
+		return MONGO_HOST;
+	}
+
+	public static void setMONGO_HOST(String mONGO_HOST) {
+		MONGO_HOST = mONGO_HOST;
+	}
+
+	public static int getMONGO_PORT() {
+		return MONGO_PORT;
+	}
+
+	public static void setMONGO_PORT(int mONGO_PORT) {
+		MONGO_PORT = mONGO_PORT;
+	}
+
+	public static String getMongo_user() {
+		return mongo_user;
+	}
+
+	public static void setMongo_user(String mongo_user) {
+		Constants.mongo_user = mongo_user;
+	}
+
+	public static String getMongo_pass() {
+		return mongo_pass;
+	}
+
+	public static void setMongo_pass(String mongo_pass) {
+		Constants.mongo_pass = mongo_pass;
+	}
+
+	public static String getMongo_authticateDatabase() {
+		return mongo_authticateDatabase;
+	}
+
+	public static void setMongo_authticateDatabase(String mongo_authticateDatabase) {
+		Constants.mongo_authticateDatabase = mongo_authticateDatabase;
+	}
+
+	public static String getClientHandler() {
+		return CLIENT_HANDLER;
+	}
+
+	public static HttpResponse getConnectResponse() {
+		return CONNECT_RESPONSE;
+	}
+
+	public static String getMongoDatabase() {
+		return MONGO_DATABASE;
+	}
+
+	public static String getTableTimeout() {
+		return TABLE_TIMEOUT;
+	}
+
+	public static String getTableProxy() {
+		return TABLE_PROXY;
+	}
+
+	public static String getTableDefalttimeout() {
+		return TABLE_DEFALTTIMEOUT;
+	}
+
+	public static void setTimeout(AtomicLong timeout) {
+		Constants.timeout = timeout;
+	}
+	static{
+		HttpResponseStatus status=new HttpResponseStatus(405, "Don not support the connect method!");
+		CONNECT_RESPONSE=new DefaultHttpResponse(HttpVersion.HTTP_1_1, status);
+		CONNECT_RESPONSE.headers().add("Allow","GET,HEAD,POST,PUT,TRACE,OPTIONS,DELETE");
+		CONNECT_RESPONSE.headers().add("Server","Beast Keeper 1.0");
+	}
+
+	public static long getTimeout() {
+		return timeout.get();
+	}
+
+	public static void setTimeout(long timeout) {
+		Constants.timeout.set(timeout);
+	}
 	public static String getREQUEST_AUTHSTRING() {
 		return REQUEST_AUTHSTRING;
 	}
@@ -89,27 +213,6 @@ public class Constants {
 	}
 	public static void setMAX_UNHADNLED_REQUEST(String mAX_UNHADNLED_REQUEST) {
 		MAX_UNHADNLED_REQUEST = Integer.parseInt(mAX_UNHADNLED_REQUEST);
-	}
-
-	public static int MONGO_PORT=27017;
-	public static final String MONGO_DATABASE="BeastKeeper";
-	public static final String TABLE_TIMEOUT="timeout";
-	public static final String TABLE_PROXY="proxy";
-	public static final String TABLE_DEFALTTIMEOUT="defaulttimeout";
-	
-	static{
-		HttpResponseStatus status=new HttpResponseStatus(405, "Don not support the connect method!");
-		CONNECT_RESPONSE=new DefaultHttpResponse(HttpVersion.HTTP_1_1, status);
-		CONNECT_RESPONSE.headers().add("Allow","GET,HEAD,POST,PUT,TRACE,OPTIONS,DELETE");
-		CONNECT_RESPONSE.headers().add("Server","Beast Keeper 1.0");
-	}
-
-	public static long getTimeout() {
-		return timeout.get();
-	}
-
-	public static void setTimeout(long timeout) {
-		Constants.timeout.set(timeout);
 	}
 
 

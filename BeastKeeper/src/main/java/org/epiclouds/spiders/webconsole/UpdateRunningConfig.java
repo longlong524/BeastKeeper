@@ -56,11 +56,11 @@ public class UpdateRunningConfig extends HttpServlet {
 			String value=request.getParameter("value");
 			Method m=Constants.class.getMethod("set"+para, String.class);
 			m.invoke(null, value);
-			request.setAttribute("success",  "更新"+para+"延时时间成功！");
+			request.setAttribute("success",  "更新参数"+para+"成功！");
 			request.getRequestDispatcher("success.jsp").forward(request, response);
 			
 		}catch(Exception e){
-			request.setAttribute("error", "更新延时时间失败！"+e.toString());
+			request.setAttribute("error", "更新参数失败！"+e.toString());
 			request.getRequestDispatcher("error.jsp").forward(request, response);
 			return;
 		}
