@@ -1,5 +1,6 @@
 package org.epiclouds.handlers.util;
 
+import java.util.Random;
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
@@ -33,6 +34,12 @@ public class BPChannel implements Delayed{
 	 */
 	private volatile ChannelManager cm;
 	/**
+	 * timeout in milliseconds
+	 */
+	private volatile long timeout;
+	
+	private final  Random random=new Random();
+	/**
 	 * 
 	 * @param host
 	 * @param ch
@@ -44,6 +51,23 @@ public class BPChannel implements Delayed{
 		this.ch=ch;
 		this.psb=psb;
 		this.cm=cm;
+		this.timeout=getRandomTimeout();
+	}
+	private long getRandomTimeout(){
+		long max_timeout=TimeoutManager.getHostTimout(host);
+		long min_timeout=Constants.getMin_timeout().get();
+		if(min_timeout>max_timeout){
+			long tmp=min_timeout;
+			min_timeout=max_timeout;
+			max_timeout=tmp;
+		}
+		if(min_timeout==max_timeout){
+			return min_timeout;
+		}
+		if(min_timeout<0){
+			return -min_timeout;
+		}
+		return random.longs(1, min_timeout, max_timeout).findFirst().getAsLong();
 	}
 	public String getHost() {
 		return host;
@@ -62,6 +86,7 @@ public class BPChannel implements Delayed{
 	}
 	public void setVisit_time(long visit_time) {
 		this.visit_time = visit_time;
+		this.timeout=getRandomTimeout();
 	}
 	@Override
 	public int compareTo(Delayed o) {
@@ -74,7 +99,6 @@ public class BPChannel implements Delayed{
 	public long getDelay(TimeUnit unit) {
 		// TODO Auto-generated method stub
 		long t1=System.currentTimeMillis()-visit_time;
-		long timeout=TimeoutManager.getHostTimout(host);
 		if(t1>=timeout){
 			return 0;
 		}

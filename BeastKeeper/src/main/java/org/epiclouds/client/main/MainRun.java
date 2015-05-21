@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
@@ -90,6 +91,7 @@ public class MainRun {
 		Constants.setMongo_authticateDatabase(pros.getProperty("mongo_authticateDatabase", "admin"));
 		Constants.setREQUEST_AUTHSTRING(pros.getProperty("request_authstring"));
 		Constants.setMAX_UNHADNLED_REQUEST(Integer.parseInt(pros.getProperty("max_unhandled_request","500")));
+		Constants.setMin_timeout(new AtomicLong(Long.parseLong(pros.getProperty("min_timeout","20000"))));
 	}
    
 	private static void initProxyFromMongo() throws NumberFormatException, IOException, InterruptedException {

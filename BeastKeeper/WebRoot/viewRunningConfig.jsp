@@ -128,6 +128,29 @@
 					</form>
 				</td>
 			</tr>
+			
+			
+			
+			<tr>
+				<td>
+				min_timeout
+				</td>
+				<td>
+				<%=Constants.getMin_timeout()%>
+				</td>
+				<td>
+						获得random的超时时需要的最小值，毫秒
+				</td>
+				<td>
+					<form class="form-horizontal" id=2 action="updateRunningConfig" method="post">
+						<input class="span2" id="appendedInputButton" type="hidden" value="Min_timeout" name="name">
+						<div class="input-append">
+ 							<input class="span2" id="appendedInputButton" type="text" name="value" placeholder="获得random的超时时需要的最小值" >
+  							<button class="btn" type="submit">更新</button>
+						</div>
+					</form>
+				</td>
+			</tr>
 		</tbody>
 	</table>
 		

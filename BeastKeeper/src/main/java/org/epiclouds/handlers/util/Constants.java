@@ -18,6 +18,10 @@ public class Constants {
 	 * the host's default time out  in milliseconds.
 	 */
 	private static AtomicLong timeout=new AtomicLong(30000);
+	/**
+	 * the minimal timeout in milliseconds
+	 */
+	private static AtomicLong min_timeout=new AtomicLong(20000);
 	
 	/**
 	 * once max request number from the queue
@@ -213,6 +217,18 @@ public class Constants {
 	}
 	public static void setMAX_UNHADNLED_REQUEST(String mAX_UNHADNLED_REQUEST) {
 		MAX_UNHADNLED_REQUEST = Integer.parseInt(mAX_UNHADNLED_REQUEST);
+	}
+
+	public static AtomicLong getMin_timeout() {
+		return min_timeout;
+	}
+
+	public static void setMin_timeout(AtomicLong min_timeout) {
+		Constants.min_timeout = min_timeout;
+	}
+	
+	public static void setMin_timeout(String min_timeout) {
+		Constants.min_timeout.set(Long.parseLong( min_timeout));
 	}
 
 
