@@ -73,6 +73,11 @@ public class NettyHttpServerHandler extends ChannelHandlerAdapter{
 			return;
 		}
 		FullHttpRequest re=(FullHttpRequest)msg;
+		if(re.headers().get("Host")==null){
+			ReferenceCountUtil.release(msg);
+			ctx.close();
+			return;
+		}
 		HostStatusBean hs=HostStatusManager.getRequestNum(re.headers().get("Host")+"");
 		if(hs!=null&&(hs.getRequest_num().get()-hs.getHandled_num().get()>Constants.getMAX_UNHADNLED_REQUEST())){
 			ReferenceCountUtil.release(msg);
