@@ -63,6 +63,12 @@ public class NettyHttpServerHandler extends ChannelHandlerAdapter{
 
 
 	@Override
+	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+		// TODO Auto-generated method stub
+		super.channelInactive(ctx);
+		ctx.close();
+	}
+	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg)
 			throws Exception {
 		FullHttpRequest res=(FullHttpRequest)msg;
@@ -72,29 +78,26 @@ public class NettyHttpServerHandler extends ChannelHandlerAdapter{
 			ctx.close();
 			return;
 		}
-		FullHttpRequest re=(FullHttpRequest)msg;
-		if(re.headers().get("Host")==null){
+		if(res.headers().get("Host")==null){
 			ReferenceCountUtil.release(msg);
 			ctx.close();
 			return;
 		}
-		HostStatusBean hs=HostStatusManager.getRequestNum(re.headers().get("Host")+"");
+		HostStatusBean hs=HostStatusManager.getRequestNum(res.headers().get("Host")+"");
 		if(hs!=null&&(hs.getRequest_num().get()-hs.getHandled_num().get()>Constants.getMAX_UNHADNLED_REQUEST())){
 			ReferenceCountUtil.release(msg);
 			ctx.close();
 			return;
 		}
-		if(re.headers().get("Host")!=null){
-			HostStatusManager.incrementRequestNum(re.headers().get("Host")+"");
-		}
+		
 		if(Constants.getREQUEST_AUTHSTRING()!=null){
 			try{
-				if(re.headers().get("Proxy-Authorization")==null){
+				if(res.headers().get("Proxy-Authorization")==null){
 					ReferenceCountUtil.release(msg);
-					ctx.close();
+					ctx.channel().writeAndFlush(Constants.NOAUTH_RESPONSE);
 					return;
 				}
-				String[] auths=(re.headers().get("Proxy-Authorization")+"").split(" ");
+				String[] auths=(res.headers().get("Proxy-Authorization")+"").split(" ");
 				if(auths.length<2){
 					ReferenceCountUtil.release(msg);
 					ctx.close();
@@ -106,7 +109,7 @@ public class NettyHttpServerHandler extends ChannelHandlerAdapter{
 					ctx.close();
 					return;
 				}
-				re.headers().remove("Proxy-Authorization");
+				res.headers().remove("Proxy-Authorization");
 			}catch(Exception e){
 				MainRun.mainlogger.error(e.getLocalizedMessage(), e);
 				ReferenceCountUtil.release(msg);
@@ -114,8 +117,10 @@ public class NettyHttpServerHandler extends ChannelHandlerAdapter{
 				return;
 			}
 		}
-
-		manager.addBPRequest(new BPRequest(ctx.channel(),re));
+		if(res.headers().get("Host")!=null){
+			HostStatusManager.incrementRequestNum(res.headers().get("Host")+"");
+		}
+		manager.addBPRequest(new BPRequest(ctx.channel(),res));
 	}
 
 	@Override

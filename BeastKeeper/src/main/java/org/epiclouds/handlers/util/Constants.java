@@ -43,6 +43,11 @@ public class Constants {
 	public final static HttpResponse CONNECT_RESPONSE;
 	
 	/**
+	 * the connect method respose
+	 */
+	public final static HttpResponse NOAUTH_RESPONSE;
+	
+	/**
 	 * the request port of client request
 	 */
 	public static  int REQUEST_PORT=4080;
@@ -75,6 +80,18 @@ public class Constants {
 	public static final String TABLE_TIMEOUT="timeout";
 	public static final String TABLE_PROXY="proxy";
 	public static final String TABLE_DEFALTTIMEOUT="defaulttimeout";
+	
+	static{
+		HttpResponseStatus status=new HttpResponseStatus(405, "Don not support the connect method!");
+		CONNECT_RESPONSE=new DefaultHttpResponse(HttpVersion.HTTP_1_1, status);
+		CONNECT_RESPONSE.headers().add("Allow","GET,HEAD,POST,PUT,TRACE,OPTIONS,DELETE");
+		CONNECT_RESPONSE.headers().add("Server","Beast Keeper 1.0");
+		
+		status=new HttpResponseStatus(407, "Authorization Required");
+		NOAUTH_RESPONSE=new DefaultHttpResponse(HttpVersion.HTTP_1_1, status);
+		NOAUTH_RESPONSE.headers().add("Proxy-Authenticate","Basic realm=\"family\"");
+		NOAUTH_RESPONSE.headers().add("Server","Beast Keeper 1.0");
+	}
 	
 	public static long getMax_poll_request_num() {
 		return max_poll_request_num;
@@ -175,12 +192,7 @@ public class Constants {
 	public static void setTimeout(AtomicLong timeout) {
 		Constants.timeout = timeout;
 	}
-	static{
-		HttpResponseStatus status=new HttpResponseStatus(405, "Don not support the connect method!");
-		CONNECT_RESPONSE=new DefaultHttpResponse(HttpVersion.HTTP_1_1, status);
-		CONNECT_RESPONSE.headers().add("Allow","GET,HEAD,POST,PUT,TRACE,OPTIONS,DELETE");
-		CONNECT_RESPONSE.headers().add("Server","Beast Keeper 1.0");
-	}
+
 
 	public static long getTimeout() {
 		return timeout.get();
