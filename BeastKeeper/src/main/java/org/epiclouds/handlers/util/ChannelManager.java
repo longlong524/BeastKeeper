@@ -3,6 +3,8 @@ package org.epiclouds.handlers.util;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
+import java.io.UnsupportedEncodingException;
+import java.util.Base64;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -174,8 +176,13 @@ public class ChannelManager implements Runnable{
 				han.setRequest(re);
 				lq.poll();
 				if(ch.getPsb().getAuthStr()!=null){
-					re.getRequest().headers().add("Proxy-Authorization", "Basic "
-						+new sun.misc.BASE64Encoder().encode(ch.getPsb().getAuthStr().getBytes()));
+					try {
+						re.getRequest().headers().add("Proxy-Authorization", "Basic "
+							+new String(Base64.getEncoder().encode(ch.getPsb().getAuthStr().getBytes("utf-8")),"utf-8"));
+					} catch (UnsupportedEncodingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 				ch.getCh().writeAndFlush(re.getRequest());
 			}

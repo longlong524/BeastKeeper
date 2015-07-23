@@ -28,8 +28,14 @@ public class ProxyManager {
 		});
 		return re;
 	}
+	
+	synchronized public static List<ProxyStateBean> getAllProxy() {
+		List<ProxyStateBean> re=new LinkedList<ProxyStateBean>();
+		re.addAll(all_proxies.values());
+		return re;
+	}
 	synchronized public static boolean addProxy(ProxyStateBean psb) {
-		if(psb==null) return false;
+		if(psb==null||psb.isRemoved()) return false;
 		if(all_proxies.get(psb.getHost())!=null){
 			return false;
 		}
@@ -48,9 +54,22 @@ public class ProxyManager {
 		pb.setRemoved(true);
 		return true;
 	}
+	
+	
+	synchronized public static boolean removeProxyByAuthStr(String authStr) {
+		if(authStr==null) return false;
+		List<ProxyStateBean> re=new LinkedList<ProxyStateBean>();
+		re.addAll(all_proxies.values());
+		for(ProxyStateBean psb:re){
+			if(psb.getAuthStr().equals(authStr)){
+				removeProxy(psb.getHost());
+			}
+		}
+		return true;
+	}
 
 	public static void addHostProxy(String host,ProxyStateBean psb) throws InterruptedException{
-		if(host==null||psb==null) return;
+		if(host==null||psb==null||psb.isRemoved()) return;
 		host_proxies.putIfAbsent(host, new LinkedBlockingQueue<ProxyStateBean>());
 		LinkedBlockingQueue<ProxyStateBean> que=host_proxies.get(host);
 		que.put(psb);

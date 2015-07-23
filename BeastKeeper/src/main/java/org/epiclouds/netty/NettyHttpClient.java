@@ -9,6 +9,7 @@ package org.epiclouds.netty;
  * @author Administrator
  *
  */
+import java.util.Base64;
 import java.util.concurrent.TimeUnit;
 
 import io.netty.bootstrap.Bootstrap;
@@ -69,7 +70,7 @@ public class NettyHttpClient {
 			public void operationComplete(Future<? super Void> future)
 					throws Exception {
 				// TODO Auto-generated method stub
-				if(future.isSuccess()){
+				if(future.isSuccess()&&!psb.isRemoved()){
 					Channel n=((DefaultChannelPromise) future).channel();
 					BPChannel ch=new BPChannel(request.getHost(), n, psb,manager);
 					 ChannelPipeline pipeline = n.pipeline();
@@ -91,11 +92,14 @@ public class NettyHttpClient {
 					n.pipeline().addLast(Constants.CLIENT_HANDLER, new NettyHttpClientHandler(ch,request));
 					if(psb.getAuthStr()!=null){
 						request.getRequest().headers().add("Proxy-Authorization", "Basic "
-							+new sun.misc.BASE64Encoder().encode(psb.getAuthStr().getBytes()));
+							+new String(Base64.getEncoder().encode(psb.getAuthStr().getBytes("utf-8")),"utf-8"));
 					}
 					n.writeAndFlush(request.getRequest());
 					psb.setErrorInfo(null);
 				}else{
+					if(psb.isRemoved()){
+						return;
+					}
 					Thread.sleep(5);
 					psb.setErrorInfo(new DateTime().toString("yyyy-MM-dd HH:mm:ss")+future.cause().toString());
 					ChannelFuture cf=sb.connect(psb.getHost(), psb.getPort());
@@ -105,7 +109,7 @@ public class NettyHttpClient {
 						public void operationComplete(Future<? super Void> future)
 								throws Exception {
 							// TODO Auto-generated method stub
-							if(future.isSuccess()){
+							if(future.isSuccess()&&!psb.isRemoved()){
 								Channel n=((DefaultChannelPromise) future).channel();
 								BPChannel ch=new BPChannel(request.getHost(), n, psb,manager);
 								 ChannelPipeline pipeline = n.pipeline();
@@ -128,6 +132,9 @@ public class NettyHttpClient {
 								psb.setErrorInfo(null);
 								manager.addBPChnnelToFreeQueue(ch);
 							}else{
+								if(psb.isRemoved()){
+									return;
+								}
 								Thread.sleep(5);
 								psb.setErrorInfo(new DateTime().toString("yyyy-MM-dd HH:mm:ss")+future.cause().toString());
 								sb.connect(psb.getHost(), psb.getPort()).addListener(this);

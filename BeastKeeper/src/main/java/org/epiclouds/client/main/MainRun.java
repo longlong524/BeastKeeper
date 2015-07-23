@@ -32,9 +32,12 @@ import org.epiclouds.netty.NettyHttpClient;
 import org.epiclouds.netty.NettyHttpServer;
 import org.epiclouds.spiders.webconsole.AddMultiProxy;
 import org.epiclouds.spiders.webconsole.AddProxy;
+import org.epiclouds.spiders.webconsole.DeleteMultiProxyByAuth;
 import org.epiclouds.spiders.webconsole.Login;
 import org.epiclouds.spiders.webconsole.Logout;
 import org.epiclouds.spiders.webconsole.RemoveProxy;
+import org.epiclouds.spiders.webconsole.Restart;
+import org.epiclouds.spiders.webconsole.ShutDown;
 import org.epiclouds.spiders.webconsole.UpdateDefaultTimeOut;
 import org.epiclouds.spiders.webconsole.UpdateRunningConfig;
 import org.epiclouds.spiders.webconsole.UpdateTimeOut;
@@ -51,10 +54,12 @@ public class MainRun {
 
 	public  static Logger mainlogger = LoggerFactory.getLogger(MainRun.class);
 
+	public volatile static boolean restart=false;
 
 
    public static void main(String[] args) throws Exception{
 	   //initProxyFromFile(Constants.PROXYFILE);
+	   Thread.sleep(5000);
 	   try{
 		   getConfig();
 		   initProxyFromMongo();
@@ -65,6 +70,25 @@ public class MainRun {
 		   ChannelManager manager=new ChannelManager(client);
 		   new NettyHttpServer(Constants.REQUEST_PORT, manager); 
 		   manager.start();
+		   Runtime.getRuntime().addShutdownHook(new Thread() {
+	            public void run() {
+	            	System.err.println("shutdown");
+	                try {
+						Thread.sleep(5000);
+					} catch (InterruptedException e) {
+					}
+	                if(restart){
+		                try {
+		                	System.err.println("restart");
+		                	 String shpath="./start.sh";  
+		                     Runtime.getRuntime().exec(shpath);  
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+	                }
+	            }    
+	        });
 	   }catch(Exception e){
 		   MainRun.mainlogger.error(e.getLocalizedMessage(), e);
 		   throw e;
@@ -153,6 +177,9 @@ public class MainRun {
 			webapp.addServlet(UpdateDefaultTimeOut.class, "/updateDefaultTimeOut");
 			webapp.addServlet(Logout.class, "/logout");
 			webapp.addServlet(UpdateRunningConfig.class, "/updateRunningConfig");
+			webapp.addServlet(DeleteMultiProxyByAuth.class, "/deleteMultiProxyByAuth");
+			webapp.addServlet(Restart.class, "/restart");
+			webapp.addServlet(ShutDown.class, "/shutdown");
 			/*webapp.addServlet(new ServletHolder(new GetSourceType()),
 			"/getSourceType");*/
 

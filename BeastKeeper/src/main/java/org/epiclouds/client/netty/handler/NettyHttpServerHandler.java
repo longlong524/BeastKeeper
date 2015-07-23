@@ -12,6 +12,7 @@ import io.netty.util.ReferenceCountUtil;
 
 import java.net.SocketAddress;
 import java.nio.charset.Charset;
+import java.util.Base64;
 
 import org.epiclouds.client.main.MainRun;
 import org.epiclouds.handlers.util.BPRequest;
@@ -72,6 +73,7 @@ public class NettyHttpServerHandler extends ChannelHandlerAdapter{
 	public void channelRead(ChannelHandlerContext ctx, Object msg)
 			throws Exception {
 		FullHttpRequest res=(FullHttpRequest)msg;
+
 		if(res.method().compareTo(HttpMethod.CONNECT)==0){
 			ReferenceCountUtil.release(msg);
 			ctx.channel().writeAndFlush(Constants.CONNECT_RESPONSE);
@@ -83,11 +85,20 @@ public class NettyHttpServerHandler extends ChannelHandlerAdapter{
 			ctx.close();
 			return;
 		}
-		HostStatusBean hs=HostStatusManager.getRequestNum(res.headers().get("Host")+"");
-		if(hs!=null&&(hs.getRequest_num().get()-hs.getHandled_num().get()>Constants.getMAX_UNHADNLED_REQUEST())){
+		if((res.headers().get("Host")+"").startsWith("106.3.38.50")
+				||(res.headers().get("Host")+"").startsWith("localhost")){
 			ReferenceCountUtil.release(msg);
 			ctx.close();
 			return;
+		}
+		HostStatusBean hs=HostStatusManager.getRequestNum(res.headers().get("Host")+"");
+		if(hs!=null&&(hs.getRequest_num().get()+1-hs.getHandled_num().
+				get()>Constants.getMAX_UNHADNLED_REQUEST())){
+			ReferenceCountUtil.release(msg);
+			ctx.close();
+			return;
+		}else{
+			HostStatusManager.incrementRequestNum(res.headers().get("Host")+"");
 		}
 		
 		if(Constants.getREQUEST_AUTHSTRING()!=null){
@@ -103,7 +114,8 @@ public class NettyHttpServerHandler extends ChannelHandlerAdapter{
 					ctx.close();
 					return;
 				}
-				String authString=new String(new sun.misc.BASE64Decoder().decodeBuffer(auths[1]),"utf-8");
+				String authString=new String(Base64.getDecoder().decode(auths[1].getBytes("utf-8"))
+						,"utf-8");
 				if(!Constants.getREQUEST_AUTHSTRING().equals(authString)){
 					ReferenceCountUtil.release(msg);
 					ctx.close();
@@ -117,9 +129,7 @@ public class NettyHttpServerHandler extends ChannelHandlerAdapter{
 				return;
 			}
 		}
-		if(res.headers().get("Host")!=null){
-			HostStatusManager.incrementRequestNum(res.headers().get("Host")+"");
-		}
+
 		manager.addBPRequest(new BPRequest(ctx.channel(),res));
 	}
 

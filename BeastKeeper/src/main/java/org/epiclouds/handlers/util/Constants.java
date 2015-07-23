@@ -89,7 +89,7 @@ public class Constants {
 		
 		status=new HttpResponseStatus(407, "Authorization Required");
 		NOAUTH_RESPONSE=new DefaultHttpResponse(HttpVersion.HTTP_1_1, status);
-		NOAUTH_RESPONSE.headers().add("Proxy-Authenticate","Basic realm=\"family\"");
+		NOAUTH_RESPONSE.headers().add("Proxy-Authenticate","Basic realm=\"login\"");
 		NOAUTH_RESPONSE.headers().add("Server","Beast Keeper 1.0");
 	}
 	

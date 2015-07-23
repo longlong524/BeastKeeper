@@ -22,8 +22,10 @@ import io.netty.handler.codec.http.HttpContentCompressor;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
+import io.netty.handler.stream.ChunkedWriteHandler;
 
 import org.epiclouds.client.netty.handler.NettyHttpServerHandler;
+import org.epiclouds.client.netty.handler.SimpleWriter;
 import org.epiclouds.handlers.util.ChannelManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +53,7 @@ public class NettyHttpServer {
 				protected void initChannel(Channel ch) throws Exception {
 					
 					 ChannelPipeline pipeline = ch.pipeline();
+					// pipeline.addLast(new SimpleWriter());
 				        /**
 				         * http-response解码器
 				         * http服务器端对response解码
@@ -66,7 +69,7 @@ public class NettyHttpServer {
 				       
 				       pipeline.addLast("aggregator", new HttpObjectAggregator(1048576*1024));
 				        pipeline.addLast(new HttpResponseEncoder());
-				        pipeline.addLast("redeflater", new HttpContentCompressor());
+				        pipeline.addLast("redeflater", new HttpContentCompressor(4));
 				        /**
 				         * http服务器端对request编码
 				         */
