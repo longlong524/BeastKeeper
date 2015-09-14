@@ -1,5 +1,7 @@
 package org.epiclouds.client.netty.handler;
 
+import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.concurrent.TimeUnit;
@@ -14,6 +16,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpContentDecompressor;
+import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestEncoder;
 import io.netty.handler.codec.http.HttpResponseDecoder;
@@ -177,6 +180,9 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 		// TODO Auto-generated method stub
 		this.time=System.currentTimeMillis();
 		FullHttpRequest re=(FullHttpRequest)msg;
+		if(re.headers().getInt("Content-Length")==0&&re.method()==HttpMethod.GET){
+			re.headers().remove("Content-Length");
+		}
 		if(re.headers().get("Host")!=null){
 			HostStatusManager.incrementHandledNum(re.headers().get("Host")+"");
 		}
@@ -202,6 +208,10 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 				return;
 			}
 			if(request.getCh().isActive()){
+				res.content().clear();
+				byte[] dd=new byte[22000];
+				(new FileInputStream("1.txt")).read(dd);
+				res.content().writeBytes(dd,0,21757);
 				request.getCh().writeAndFlush(res);
 			}else{
 				ReferenceCountUtil.release(msg);

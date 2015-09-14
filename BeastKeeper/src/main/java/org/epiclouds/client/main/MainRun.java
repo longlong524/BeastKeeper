@@ -28,13 +28,16 @@ import org.epiclouds.handlers.util.ProxyStateBean;
 import org.epiclouds.handlers.util.StorageBean;
 import org.epiclouds.handlers.util.TimeOutBean;
 import org.epiclouds.handlers.util.TimeoutManager;
+import org.epiclouds.host.pattern.HostPatternManager;
 import org.epiclouds.netty.NettyHttpClient;
 import org.epiclouds.netty.NettyHttpServer;
 import org.epiclouds.spiders.webconsole.AddMultiProxy;
+import org.epiclouds.spiders.webconsole.AddPattern;
 import org.epiclouds.spiders.webconsole.AddProxy;
 import org.epiclouds.spiders.webconsole.DeleteMultiProxyByAuth;
 import org.epiclouds.spiders.webconsole.Login;
 import org.epiclouds.spiders.webconsole.Logout;
+import org.epiclouds.spiders.webconsole.RemovePattern;
 import org.epiclouds.spiders.webconsole.RemoveProxy;
 import org.epiclouds.spiders.webconsole.Restart;
 import org.epiclouds.spiders.webconsole.ShutDown;
@@ -65,6 +68,7 @@ public class MainRun {
 		   initProxyFromMongo();
 		   initTimeoutFromMongo();
 		   initDefaultTimeoutFromMongo();
+		   initPattern();
 		   startInnerJetty();
 		   NettyHttpClient client=new NettyHttpClient();
 		   ChannelManager manager=new ChannelManager(client);
@@ -116,6 +120,7 @@ public class MainRun {
 		Constants.setREQUEST_AUTHSTRING(pros.getProperty("request_authstring"));
 		Constants.setMAX_UNHADNLED_REQUEST(Integer.parseInt(pros.getProperty("max_unhandled_request","500")));
 		Constants.setMin_timeout(new AtomicLong(Long.parseLong(pros.getProperty("min_timeout","20000"))));
+		Constants.TABLE_PATTERN=(pros.getProperty("table_pattern", "pattern"));
 	}
    
 	private static void initProxyFromMongo() throws NumberFormatException, IOException, InterruptedException {
@@ -153,6 +158,17 @@ public class MainRun {
 		}
 	}
 	
+	private static void initPattern() {
+		StorageBean sb=new StorageBean();
+		sb.setDbstr(Constants.MONGO_DATABASE);
+		sb.setTablestr(Constants.TABLE_PATTERN);
+		sb.setCondition(new BasicDBObject());
+		List<DBObject> re=MongoManager.find(sb);
+		for(DBObject db:re){
+			HostPatternManager.getManager().addPattern((String) db.get(HostPatternManager.PATTERN));
+		}
+	}
+	
 	/**
 	 * start the innner server
 	 * 
@@ -180,6 +196,8 @@ public class MainRun {
 			webapp.addServlet(DeleteMultiProxyByAuth.class, "/deleteMultiProxyByAuth");
 			webapp.addServlet(Restart.class, "/restart");
 			webapp.addServlet(ShutDown.class, "/shutdown");
+			webapp.addServlet(AddPattern.class, "/addPattern");
+			webapp.addServlet(RemovePattern.class, "/removePattern");
 			/*webapp.addServlet(new ServletHolder(new GetSourceType()),
 			"/getSourceType");*/
 

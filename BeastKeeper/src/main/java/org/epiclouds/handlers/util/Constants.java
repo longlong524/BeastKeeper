@@ -80,6 +80,7 @@ public class Constants {
 	public static final String TABLE_TIMEOUT="timeout";
 	public static final String TABLE_PROXY="proxy";
 	public static final String TABLE_DEFALTTIMEOUT="defaulttimeout";
+	public static String TABLE_PATTERN="pattern";
 	
 	static{
 		HttpResponseStatus status=new HttpResponseStatus(405, "Don not support the connect method!");
@@ -155,6 +156,10 @@ public class Constants {
 
 	public static void setMongo_pass(String mongo_pass) {
 		Constants.mongo_pass = mongo_pass;
+	}
+
+	public static String getTablePattern() {
+		return TABLE_PATTERN;
 	}
 
 	public static String getMongo_authticateDatabase() {

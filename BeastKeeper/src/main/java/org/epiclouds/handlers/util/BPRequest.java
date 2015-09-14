@@ -1,5 +1,7 @@
 package org.epiclouds.handlers.util;
 
+import org.epiclouds.host.pattern.HostPatternManager;
+
 import io.netty.buffer.Unpooled;
 import io.netty.buffer.UnpooledHeapByteBuf;
 import io.netty.channel.Channel;
@@ -33,8 +35,15 @@ public class BPRequest {
 	public BPRequest(Channel ch,FullHttpRequest request){
 		this.setCh(ch);
 		this.setRequest(request);
-		this.setHost((request.headers().get("host")+""));
+		String h=request.headers().get("host")+"";
+		String pattern=HostPatternManager.getManager().getClosestMatchString(h);
+		if(pattern!=null){
+			this.host=pattern;
+		}else{
+			this.host=h;
+		}
 	}
+	
 	public String getHost() {
 		return host;
 	}

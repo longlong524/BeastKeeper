@@ -1,8 +1,5 @@
 package org.epiclouds.handlers.util;
 
-import io.netty.util.concurrent.Future;
-import io.netty.util.concurrent.GenericFutureListener;
-
 import java.io.UnsupportedEncodingException;
 import java.util.Base64;
 import java.util.Iterator;
@@ -100,7 +97,7 @@ public class ChannelManager implements Runnable{
 	public void run() {
 		while(true){
 			try {
-				Thread.sleep(20);
+				Thread.sleep(5);
 			} catch (InterruptedException e) {
 			}
 			for(int i=0;i<max_poll_request_num;i++){
