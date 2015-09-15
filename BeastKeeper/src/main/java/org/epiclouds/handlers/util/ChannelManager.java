@@ -55,6 +55,7 @@ public class ChannelManager implements Runnable{
 	public void addBPRequest(BPRequest request){
 		try {
 			requestQue.put(request);
+			HostStatusManager.incrementRequestNum(request.getHost());
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 		}
@@ -142,6 +143,7 @@ public class ChannelManager implements Runnable{
 				if(psb!=null){
 					client.connect(psb, re, this);
 					lq.poll();
+					HostStatusManager.incrementHandledNum(re.getHost());
 					continue;
 				}
 				/**
@@ -182,6 +184,7 @@ public class ChannelManager implements Runnable{
 					}
 				}
 				ch.getCh().writeAndFlush(re.getRequest());
+				HostStatusManager.incrementHandledNum(re.getHost());
 			}
 		}
 	}

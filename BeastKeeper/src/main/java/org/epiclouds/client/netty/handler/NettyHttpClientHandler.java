@@ -78,6 +78,7 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
 			throws Exception {
+		cause.printStackTrace();
 		if(bp!=null){
 			bp.getPsb().setErrorInfo(new DateTime().toString("yyyy-MM-dd HH:mm:ss")+cause.toString());
 		}
@@ -183,9 +184,6 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 		if(re.headers().getInt("Content-Length")==0&&re.method()==HttpMethod.GET){
 			re.headers().remove("Content-Length");
 		}
-		if(re.headers().get("Host")!=null){
-			HostStatusManager.incrementHandledNum(re.headers().get("Host")+"");
-		}
 		//System.err.println(msg);
 		super.write(ctx, msg, promise);
 	}
@@ -208,10 +206,6 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 				return;
 			}
 			if(request.getCh().isActive()){
-				res.content().clear();
-				byte[] dd=new byte[22000];
-				(new FileInputStream("1.txt")).read(dd);
-				res.content().writeBytes(dd,0,21757);
 				request.getCh().writeAndFlush(res);
 			}else{
 				ReferenceCountUtil.release(msg);

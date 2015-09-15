@@ -55,6 +55,7 @@ public class NettyHttpServerHandler extends ChannelHandlerAdapter{
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
 			throws Exception {
 		// TODO Auto-generated method stub
+		cause.printStackTrace();
 		ctx.close();
 		MainRun.mainlogger.error(cause.getLocalizedMessage(), cause);
 	}
@@ -91,14 +92,13 @@ public class NettyHttpServerHandler extends ChannelHandlerAdapter{
 			ctx.close();
 			return;
 		}
-		HostStatusBean hs=HostStatusManager.getRequestNum(res.headers().get("Host")+"");
+		BPRequest br=new BPRequest(ctx.channel(),res);
+		HostStatusBean hs=HostStatusManager.getRequestNum(br.getHost());
 		if(hs!=null&&(hs.getRequest_num().get()+1-hs.getHandled_num().
 				get()>Constants.getMAX_UNHADNLED_REQUEST())){
 			ReferenceCountUtil.release(msg);
 			ctx.close();
 			return;
-		}else{
-			HostStatusManager.incrementRequestNum(res.headers().get("Host")+"");
 		}
 		
 		if(Constants.getREQUEST_AUTHSTRING()!=null){
@@ -129,8 +129,7 @@ public class NettyHttpServerHandler extends ChannelHandlerAdapter{
 				return;
 			}
 		}
-
-		manager.addBPRequest(new BPRequest(ctx.channel(),res));
+		manager.addBPRequest(br);
 	}
 
 	@Override

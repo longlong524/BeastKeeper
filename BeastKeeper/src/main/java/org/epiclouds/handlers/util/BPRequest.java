@@ -35,13 +35,14 @@ public class BPRequest {
 	public BPRequest(Channel ch,FullHttpRequest request){
 		this.setCh(ch);
 		this.setRequest(request);
-		String h=request.headers().get("host")+"";
+		String h=request.headers().get("Host")+"";
 		String pattern=HostPatternManager.getManager().getClosestMatchString(h);
 		if(pattern!=null){
 			this.host=pattern;
 		}else{
 			this.host=h;
 		}
+
 	}
 	
 	public String getHost() {

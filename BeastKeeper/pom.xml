@@ -3,7 +3,7 @@
   <groupId>org.epiclouds</groupId>
   <artifactId>beastkeeper</artifactId>
   <name>beastkeeper</name>
-  <version>0.1</version>
+  <version>1.0</version>
   <description>管理爬虫代理的工程</description>
   
    <properties>
