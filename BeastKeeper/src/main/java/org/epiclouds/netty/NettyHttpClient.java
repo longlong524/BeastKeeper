@@ -142,7 +142,7 @@ public class NettyHttpClient {
 						}
 			    		
 					});
-					manager.putRequestBack(request);
+					manager.addBPRequest(request);
 				}
 			}
     		

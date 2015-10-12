@@ -46,12 +46,6 @@ public class ChannelManager implements Runnable{
 	public ChannelManager(NettyHttpClient client){
 		this.client=client;
 	}
-	public void putRequestBack(BPRequest request){
-		try {
-			requestQue.put(request);
-		} catch (InterruptedException e) {
-		}
-	}
 	public void addBPRequest(BPRequest request){
 		try {
 			requestQue.put(request);
