@@ -28,6 +28,7 @@ import io.netty.util.concurrent.GenericFutureListener;
 
 import org.epiclouds.client.main.MainRun;
 import org.epiclouds.handlers.util.BPChannel;
+import org.epiclouds.handlers.util.BPChannel.WHERE;
 import org.epiclouds.handlers.util.BPRequest;
 import org.epiclouds.handlers.util.Constants;
 import org.epiclouds.handlers.util.HostStatusManager;
@@ -105,11 +106,21 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 			return;
 		}
 		if(this.getBp().getPsb().isRemoved()&&active){
-			this.bp.getCm().removeBPChnnelFromFreeQueue(bp);
+			if(this.bp.getWh()==WHERE.FREEQUEUE){
+				this.bp.getCm().removeBPChnnelFromFreeQueue(bp);
+			}
+			if(this.bp.getWh()==WHERE.RECOVERQUEUE){
+				this.bp.getCm().removeBPChnnelFromRecoverQueue(bp);
+			}
 			active=false;
 			return;
 		}
-		this.bp.getCm().removeBPChnnelFromFreeQueue(bp);
+		if(this.bp.getWh()==WHERE.FREEQUEUE){
+			this.bp.getCm().removeBPChnnelFromFreeQueue(bp);
+		}
+		if(this.bp.getWh()==WHERE.RECOVERQUEUE){
+			this.bp.getCm().removeBPChnnelFromRecoverQueue(bp);
+		}
 		ctx.channel().close();
 		NioSocketChannel nchannel=new NioSocketChannel();
 		ctx.channel().eventLoop().register(nchannel);
@@ -134,7 +145,14 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 				       n.pipeline().addLast( new HttpRequestEncoder());
 					n.pipeline().addLast(Constants.CLIENT_HANDLER, new NettyHttpClientHandler(
 							NettyHttpClientHandler.this.bp,null));
-					NettyHttpClientHandler.this.bp.getCm().addBPChnnelToFreeQueue(bp);
+					
+					
+					if(NettyHttpClientHandler.this.bp.getWh()==WHERE.FREEQUEUE){
+						NettyHttpClientHandler.this.bp.getCm().addBPChnnelToFreeQueue(bp);
+					}
+					if(NettyHttpClientHandler.this.bp.getWh()==WHERE.RECOVERQUEUE){
+						NettyHttpClientHandler.this.bp.getCm().addBPChnnelToRecoverQueue(bp);
+					}
 					if(bp!=null){
 						bp.getPsb().setErrorInfo(null);
 					}

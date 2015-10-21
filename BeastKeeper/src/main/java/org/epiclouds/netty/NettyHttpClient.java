@@ -33,11 +33,13 @@ import io.netty.util.concurrent.GenericFutureListener;
 import org.epiclouds.client.netty.handler.NettyHttpClientHandler;
 import org.epiclouds.client.netty.handler.SimpleEncoder;
 import org.epiclouds.handlers.util.BPChannel;
+import org.epiclouds.handlers.util.BPChannel.WHERE;
 import org.epiclouds.handlers.util.BPRequest;
 import org.epiclouds.handlers.util.ChannelManager;
 import org.epiclouds.handlers.util.Constants;
 import org.epiclouds.handlers.util.ProxyManager;
 import org.epiclouds.handlers.util.ProxyStateBean;
+import org.epiclouds.handlers.util.RecoverChannelManager;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,7 +74,7 @@ public class NettyHttpClient {
 				// TODO Auto-generated method stub
 				if(future.isSuccess()&&!psb.isRemoved()){
 					Channel n=((DefaultChannelPromise) future).channel();
-					BPChannel ch=new BPChannel(request.getHost(), n, psb,manager);
+					BPChannel ch=new BPChannel(request.getHost(), n, psb,manager,WHERE.FREEQUEUE);
 					 ChannelPipeline pipeline = n.pipeline();
 				        /**
 				         * http-response解码器
@@ -89,7 +91,14 @@ public class NettyHttpClient {
 				         * http服务器端对request编码
 				         */
 				    pipeline.addLast( new HttpRequestEncoder());
-					n.pipeline().addLast(Constants.CLIENT_HANDLER, new NettyHttpClientHandler(ch,request));
+				   
+					if(request.getRequest().headers().contains(Constants.GETPROXYHEADER)){
+						ch.setWh(WHERE.RECOVERQUEUE);
+						pipeline.addLast(Constants.CLIENT_HANDLER, new NettyHttpClientHandler(ch,null));
+						RecoverChannelManager.sendProxyToChannel(ch, request); 
+						return;
+					}
+					pipeline.addLast(Constants.CLIENT_HANDLER, new NettyHttpClientHandler(ch,request));
 					if(psb.getAuthStr()!=null){
 						request.getRequest().headers().add("Proxy-Authorization", "Basic "
 							+new String(Base64.getEncoder().encode(psb.getAuthStr().getBytes("utf-8")),"utf-8"));
@@ -111,7 +120,7 @@ public class NettyHttpClient {
 							// TODO Auto-generated method stub
 							if(future.isSuccess()&&!psb.isRemoved()){
 								Channel n=((DefaultChannelPromise) future).channel();
-								BPChannel ch=new BPChannel(request.getHost(), n, psb,manager);
+								BPChannel ch=new BPChannel(request.getHost(), n, psb,manager,WHERE.FREEQUEUE);
 								 ChannelPipeline pipeline = n.pipeline();
 							        /**
 							         * http-response解码器
@@ -128,7 +137,7 @@ public class NettyHttpClient {
 							         * http服务器端对request编码
 							         */
 							    pipeline.addLast( new HttpRequestEncoder());
-								n.pipeline().addLast(Constants.CLIENT_HANDLER, new NettyHttpClientHandler(ch,null));
+							    pipeline.addLast(Constants.CLIENT_HANDLER, new NettyHttpClientHandler(ch,null));
 								psb.setErrorInfo(null);
 								manager.addBPChnnelToFreeQueue(ch);
 							}else{

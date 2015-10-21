@@ -32,6 +32,7 @@ public class ProxyStateBean {
 	 */
 	private volatile boolean removed=false;
 
+	
 	public ProxyStateBean(String host,int port,String authStr){
 		this.host=host;
 		this.port=port;
@@ -45,7 +46,7 @@ public class ProxyStateBean {
 		return host.hashCode();
 	}
 	public String toString(){
-		return host+":"+port;
+		return host+":"+port+":"+authStr;
 	}
 
 	public String getErrorInfo() {

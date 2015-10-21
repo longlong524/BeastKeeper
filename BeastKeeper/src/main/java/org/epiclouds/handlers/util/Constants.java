@@ -29,6 +29,11 @@ public class Constants {
 	public static long max_poll_request_num=100;
 	
 	/**
+	 * once max command number from the queue
+	 */
+	public static long max_poll_command_num=1000;
+	
+	/**
 	 * max number handle request
 	 */
 	public static long max_poll_handle_num=100;
@@ -81,6 +86,9 @@ public class Constants {
 	public static final String TABLE_PROXY="proxy";
 	public static final String TABLE_DEFALTTIMEOUT="defaulttimeout";
 	public static String TABLE_PATTERN="pattern";
+	
+	public static final String GETPROXYHEADER="getproxy";
+	public static final String PUTPROXYHEADER="putproxy";
 	
 	static{
 		HttpResponseStatus status=new HttpResponseStatus(405, "Don not support the connect method!");

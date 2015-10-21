@@ -39,19 +39,21 @@ public class BPChannel implements Delayed{
 	private volatile long timeout;
 	
 	private final  Random random=new Random();
+	
+	private volatile WHERE wh;
 	/**
 	 * 
 	 * @param host
 	 * @param ch
 	 * @param psb
 	 */
-	
-	public BPChannel(String host,Channel ch, ProxyStateBean psb,ChannelManager cm){
+	public BPChannel(String host,Channel ch, ProxyStateBean psb,ChannelManager cm,WHERE wh){
 		this.host=host;
 		this.ch=ch;
 		this.psb=psb;
 		this.cm=cm;
 		this.timeout=getRandomTimeout();
+		this.setWh(wh);
 	}
 	private long getRandomTimeout(){
 		long max_timeout=TimeoutManager.getHostTimout(host);
@@ -128,5 +130,15 @@ public class BPChannel implements Delayed{
 		this.cm = cm;
 	}
 	
-	
+	public WHERE getWh() {
+		return wh;
+	}
+	public void setWh(WHERE wh) {
+		this.wh = wh;
+	}
+
+	public static enum WHERE{
+		FREEQUEUE,
+		RECOVERQUEUE
+	}
 }
