@@ -23,7 +23,6 @@ public class RecoverChannelManager {
 		try {
 			res.content().writeBytes(channel.getPsb().toString().getBytes("UTF-8"));
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		res.headers().addInt("Content-Length",res.content().readableBytes());

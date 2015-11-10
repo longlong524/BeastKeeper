@@ -110,6 +110,7 @@ public class ChannelManager implements Runnable{
 	}
 	public void putbackProxyToBackQueue(BPChannel channel,BPRequest request){
 		if(Thread.currentThread()==thisthread){
+			
 			DelayQueue<BPChannel> dq=null;
 				dq=backChannels.get(channel.getHost());
 				if(dq==null){
@@ -137,6 +138,7 @@ public class ChannelManager implements Runnable{
 					addBPChnnelToFreeQueue(tmp);
 				}
 			}
+			
 		}else{
 			commandQue.add(new ChannelCommandBean(Command.PutbackProxyToBackQueue, new Object[]{channel,request}));
 		}
@@ -233,10 +235,11 @@ public class ChannelManager implements Runnable{
 				String host=iter.next();
 				DelayQueue<BPChannel> recoverChannelQue=backChannels.get(host);
 				BPChannel expiredChannel=recoverChannelQue.poll();
-				if(expiredChannel!=null){
+				while(expiredChannel!=null){
 					expiredChannel.setVisit_time(System.currentTimeMillis());
 					expiredChannel.setWh(WHERE.FREEQUEUE);
 					addBPChnnelToFreeQueue(expiredChannel);
+					expiredChannel=recoverChannelQue.poll();
 				}
 				LinkedBlockingQueue<BPRequest> lq=host_queues.get(host);
 				final BPRequest re=lq.peek();
