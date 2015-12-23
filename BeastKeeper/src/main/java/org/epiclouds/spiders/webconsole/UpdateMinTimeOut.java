@@ -23,13 +23,13 @@ import com.mongodb.DBObject;
  * Servlet implementation class GetChart
  */
 
-public class UpdateTimeOut extends HttpServlet {
+public class UpdateMinTimeOut extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Default constructor.
 	 */
-	public UpdateTimeOut() {
+	public UpdateMinTimeOut() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -58,8 +58,8 @@ public class UpdateTimeOut extends HttpServlet {
 			if(host==null||"".equals(host)){
 				throw new Exception("host string is null!");
 			}
-			long timeout=Long.parseLong(request.getParameter("timeout"));
-			boolean re=TimeoutManager.updateHostTimout(host, timeout);
+			long timeout=Long.parseLong(request.getParameter("mintimeout"));
+			boolean re=TimeoutManager.updateMinHostTimout(host, timeout);
 			TimeOutBean bb=TimeoutManager.getHostTimoutBean(host);
 			if(re){
 				StorageBean sb=new StorageBean();
@@ -69,7 +69,7 @@ public class UpdateTimeOut extends HttpServlet {
 				con.put("host", host);
 				DBObject data=new BasicDBObject();
 				data.put("host", host);
-				data.put("timeout", timeout);
+				data.put("timeout", bb.getTimeout());
 				data.put("minTimeout", bb.getMinTimeout());
 				sb.setData(data);
 				sb.setCondition(con);

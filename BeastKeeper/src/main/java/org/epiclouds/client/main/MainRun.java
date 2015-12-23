@@ -42,13 +42,16 @@ import org.epiclouds.spiders.webconsole.RemoveProxy;
 import org.epiclouds.spiders.webconsole.Restart;
 import org.epiclouds.spiders.webconsole.ShutDown;
 import org.epiclouds.spiders.webconsole.UpdateDefaultTimeOut;
+import org.epiclouds.spiders.webconsole.UpdateMinTimeOut;
 import org.epiclouds.spiders.webconsole.UpdateRunningConfig;
 import org.epiclouds.spiders.webconsole.UpdateTimeOut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.alibaba.fastjson.JSONObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import com.mongodb.util.JSON;
 
 /**
  * Discards any incoming data.
@@ -143,8 +146,7 @@ public class MainRun {
 		sb.setCondition(new BasicDBObject());
 		List<DBObject> re=MongoManager.find(sb);
 		for(DBObject db:re){
-			TimeoutManager.addHostTimout(new TimeOutBean((String)db.get("host"), 
-					(Long)db.get("timeout")));
+			TimeoutManager.addHostTimout(JSONObject.parseObject(JSONObject.toJSONString(db),TimeOutBean.class));
 		}
 	}
 	private static void initDefaultTimeoutFromMongo() throws NumberFormatException, IOException, InterruptedException {
@@ -190,6 +192,7 @@ public class MainRun {
 			webapp.addServlet(AddMultiProxy.class, "/addMultiProxy");
 			webapp.addServlet(RemoveProxy.class, "/removeProxy");
 			webapp.addServlet(UpdateTimeOut.class, "/updateTimeOut");
+			webapp.addServlet(UpdateMinTimeOut.class, "/updateMinTimeOut");
 			webapp.addServlet(UpdateDefaultTimeOut.class, "/updateDefaultTimeOut");
 			webapp.addServlet(Logout.class, "/logout");
 			webapp.addServlet(UpdateRunningConfig.class, "/updateRunningConfig");

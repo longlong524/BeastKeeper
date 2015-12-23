@@ -124,7 +124,7 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 		ctx.channel().close();
 		NioSocketChannel nchannel=new NioSocketChannel();
 		ctx.channel().eventLoop().register(nchannel);
-		final SocketAddress remoteAddr=	new InetSocketAddress(bp.getPsb().getHost(),bp.getPsb().getPort());
+		final InetSocketAddress remoteAddr=	new InetSocketAddress(bp.getPsb().getHost(),bp.getPsb().getPort());
 		ChannelFuture cf=nchannel.connect(remoteAddr);
 		cf.addListener(new GenericFutureListener<Future<? super Void>>() {
 
@@ -142,7 +142,7 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 				        /**
 				         * http服务器端对request编码
 				         */
-				       n.pipeline().addLast( new HttpRequestEncoder());
+				      n.pipeline().addLast( new HttpRequestEncoder());
 					n.pipeline().addLast(Constants.CLIENT_HANDLER, new NettyHttpClientHandler(
 							NettyHttpClientHandler.this.bp,null));
 					
@@ -164,7 +164,9 @@ public class NettyHttpClientHandler extends ChannelHandlerAdapter{
 					}
 					NioSocketChannel nchannel=new NioSocketChannel();
 					n.eventLoop().register(nchannel);
-					ChannelFuture cf2=nchannel.connect(remoteAddr);
+					ChannelFuture cf2=nchannel.connect(new InetSocketAddress(
+							remoteAddr.getHostString(),
+							remoteAddr.getPort()));
 					cf2.addListener(this);
 				}
 			}

@@ -57,7 +57,7 @@ public class BPChannel implements Delayed{
 	}
 	private long getRandomTimeout(){
 		long max_timeout=TimeoutManager.getHostTimout(host);
-		long min_timeout=Constants.getMin_timeout().get();
+		long min_timeout=TimeoutManager.getHostMinTimout(host);
 		if(min_timeout>max_timeout){
 			long tmp=min_timeout;
 			min_timeout=max_timeout;

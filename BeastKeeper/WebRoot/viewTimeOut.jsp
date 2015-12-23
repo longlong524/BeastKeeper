@@ -60,8 +60,10 @@
 		<thead>
 			<tr class="success">
 				<td>host地址</td>
-				<td>延时(0即为继承默认延时时间)/毫秒</td>
-				<td>更新延时</td>
+				<td>最大延时(0即为继承默认延时时间)/毫秒</td>
+				<td>最小延时(0即为继承默认最小延时时间)/毫秒</td>
+				<td>更新最大延时</td>
+				<td>更新最小延时</td>
 			</tr>
 		</thead>
 		<tbody>
@@ -78,10 +80,22 @@
 						<%=eb.getTimeout()%>
 				</td>
 				<td>
+						<%=eb.getMinTimeout()%>
+				</td>
+				<td>
 					<form class="form-horizontal" id=<%=i %> action="updateTimeOut" method="post">
 						<input class="span2" id="appendedInputButton" type="hidden" value="<%=eb.getHost()%>" name="host">
 						<div class="input-append">
- 							<input class="span2" id="appendedInputButton" type="text" name="timeout" placeholder="毫秒" >
+ 							<input class="span2" id="appendedInputButton" type="text" name="timeout" placeholder="最大延时/毫秒" >
+  							<button class="btn" type="submit">更新延时</button>
+						</div>
+					</form>
+				</td>
+				<td>
+					<form class="form-horizontal" id=<%=i %> action="updateMinTimeOut" method="post">
+						<input class="span2" id="appendedInputButton" type="hidden" value="<%=eb.getHost()%>" name="host">
+						<div class="input-append">
+ 							<input class="span2" id="appendedInputButton" type="text" name="mintimeout" placeholder="最小延时/毫秒" >
   							<button class="btn" type="submit">更新延时</button>
 						</div>
 					</form>
