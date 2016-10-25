@@ -1,0 +1,125 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.epiclouds</groupId>
+  <artifactId>beastkeeper</artifactId>
+  <name>beastkeeper</name>
+  <version>1.0</version>
+  <description>管理爬虫代理的工程</description>
+  
+   <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+    	
+			
+			
+			<plugin>  
+			        <groupId>org.apache.maven.plugins</groupId>  
+			        <artifactId>maven-shade-plugin</artifactId>  
+			        <version>2.4.2</version>  
+			        <configuration>
+			        	<filters>
+				            <filter>
+				              <artifact>*:*</artifact>
+				              <excludes>
+				                <exclude>META-INF/*.SF</exclude>
+				                <exclude>META-INF/*.DSA</exclude>
+				                <exclude>META-INF/*.RSA</exclude>
+				              </excludes>
+				            </filter>
+				          </filters>
+			        	<shadedArtifactAttached>
+			        		false
+			        	</shadedArtifactAttached>  
+			        	<createSourcesJar>
+			        		false
+			        	</createSourcesJar>
+			          <transformers>  
+				        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+				         	<mainClass>org.epiclouds.client.main.MainRun</mainClass>  
+				         </transformer>  
+				         <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+		                  	<resource>META-INF/spring.handlers</resource>
+			              </transformer>
+			               <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+			                  <resource>META-INF/spring.schemas</resource>
+			               </transformer>
+			      		</transformers>  
+			        </configuration>  
+			        <executions>  
+			          <execution>  
+			            <phase>install</phase>  
+			            <goals>  
+			              <goal>shade</goal>  
+			            </goals>  
+			          </execution>  
+			        </executions>  
+			      </plugin> 
+			
+			
+			
+    </plugins>
+  </build>
+  <dependencies>
+  <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-all</artifactId>
+      <version>5.0.0.Alpha3-SNAPSHOT</version> 
+      <!-- <version>5.0.0.Alpha2</version> -->
+    </dependency>
+    <dependency>
+    <groupId>com.jcraft</groupId>
+    <artifactId>jzlib</artifactId>
+      <version>1.1.2</version>
+  </dependency>
+	<dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>1.1.7</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.1.7</version>
+        </dependency>
+
+ 	<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>myfastjson</artifactId>
+			<version>1.2.6</version>
+		</dependency> 
+
+   		<!-- Joda Time Library -->
+	<dependency>
+		<groupId>joda-time</groupId>
+		<artifactId>joda-time</artifactId>
+		<version>2.3</version>
+	</dependency>
+		  <dependency>
+			<groupId>org.eclipse.jetty.aggregate</groupId>
+			<artifactId>jetty-all</artifactId>
+			<version>8.1.16.v20140903</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>jasper</artifactId>
+			<version>6.0.39</version>
+		</dependency>
+	<dependency>
+        <groupId>org.mongodb</groupId>
+		<artifactId>mongo-java-driver</artifactId>
+        <version>2.13.0-rc0</version>
+    </dependency>
+  </dependencies>
+</project>
