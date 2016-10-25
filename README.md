@@ -2,7 +2,7 @@
 **This is a project to manage all http and https proxy. If you want to use a lot of proxies to develope a spider, it is very useful.**
 
 ## Design
-Based on netty.
+Based on netty. This is a maven project for beastkeeper.
 
 ## how to use
 Configure the config file, file name : config
@@ -35,3 +35,4 @@ View Console.
     view localhost:8008, username is admin123 password is 123Yuanshuju456
 
 Now enjoy!
+
